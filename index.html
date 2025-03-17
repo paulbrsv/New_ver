@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/filters.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/places.css">
+    <!-- Добавлен стиль для загрузчика -->
+    <style>
+      /* Стили можно добавить в styles.css или создать отдельный файл loader.css */
+
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.preloader .spinner {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--color-secondary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.preloader .loading-text {
+    position: absolute;
+    top: calc(50% + 50px);
+    font-size: 16px;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+    </style>
+</head>
+<body>
+    <header id="header"></header>
+
+    <main>
+        <section class="filters-block">
+            <div class="filters">
+                <div class="filter-left"></div>
+                <div class="filter-right"></div>
+            </div>
+            <div class="filters-mobile"></div>
+        </section>
+
+        <div class="content">
+            <div id="map"></div>
+            <div class="places-list" role="list" aria-label="Список мест"></div>
+            <button class="show-list-btn" aria-label="Показать список"></button>
+            <button class="close-btn" aria-label="Закрыть список"></button>
+            <div class="map-popup-mobile" aria-live="polite"></div>
+        </div>
+        <button class="nearby-btn" aria-label="Show nearby">Show nearby</button>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/places.js"></script>
+    <script src="js/main.js"></script>
+    <div class="preloader">
+    <div class="spinner"></div>
+    <div class="loading-text">Загрузка...</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,3819 @@
+
+
+=== ./index.html ===
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/filters.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/places.css">
+    <!-- Добавлен стиль для загрузчика -->
+    <style>
+      /* Стили можно добавить в styles.css или создать отдельный файл loader.css */
+
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.99);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.preloader .spinner {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--color-secondary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.preloader .loading-text {
+    position: absolute;
+    top: calc(50% + 50px);
+    font-size: 16px;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+    </style>
+</head>
+<body>
+    <header id="header"></header>
+
+    <main>
+        <section class="filters-block">
+            <div class="filters">
+                <div class="filter-left"></div>
+                <div class="filter-right"></div>
+            </div>
+            <div class="filters-mobile"></div>
+        </section>
+
+        <div class="content">
+            <div id="map"></div>
+            <div class="places-list" role="list" aria-label="Список мест"></div>
+            <button class="show-list-btn" aria-label="Показать список"></button>
+            <button class="close-btn" aria-label="Закрыть список"></button>
+            <div class="map-popup-mobile" aria-live="polite"></div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/places.js"></script>
+    <script src="js/main.js"></script>
+    <div class="preloader">
+    <div class="spinner"></div>
+    <div class="loading-text">Загрузка...</div>
+</div>
+</body>
+</html>
+
+
+=== ./css/map.css ===
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    /* Добавляем фиксы для мобильных устройств */
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Стили для контейнера карты */
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+/* Фикс для attribution */
+.leaflet-control-attribution {
+    position: fixed !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    font-size: 10px;
+    text-align: right;
+}
+
+.custom-marker-selected {
+    background-image: url('/data/images/mark.svg');
+    background-size: cover;
+    width: 30px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.custom-marker-default {
+    background-color: var(--color-secondary);
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 500px;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    max-width: 500px !important;
+    width: 500px !important;
+    border-radius: 8px;
+}
+
+.leaflet-popup-content .place-card .place-image {
+    width: 120px !important;
+    height: 150px !important;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.leaflet-popup-content .place-card .place-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: var(--popup-min-height-desktop);
+}
+
+.leaflet-popup-content .place-card .place-links-social {
+    margin-top: auto;
+}
+
+/* Дополнительные фиксы для мобильных устройств */
+@supports (-webkit-touch-callout: none) {
+    #map {
+        position: fixed !important;
+        top: 56px !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 56px) !important;
+    }
+
+    .content {
+        position: fixed !important;
+        top: 56px !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 56px) !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Фикс для всех мобильных устройств */
+@media (max-width: 768px) {
+    #map {
+        position: fixed !important;
+        top: 56px !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 56px) !important;
+    }
+
+    .content {
+        position: fixed !important;
+        top: 56px !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 56px) !important;
+        overflow: hidden !important;
+    }
+}
+
+
+=== ./css/styles.css ===
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+main {
+    margin: 56px 0 0; /* Убираем margin-bottom (40px), так как футер удалён */
+    min-height: calc(100vh - 56px); /* Учитываем только высоту header (56px) */
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.content {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    display: flex; /* Добавляем flex, чтобы карта и список растянулись */
+}
+
+/* Скрываем футер */
+footer {
+    display: none;
+}
+
+/* Карта */
+.map {
+    flex: 1; /* Занимает оставшееся пространство */
+    height: 100%; /* Растягивается на всю высоту */
+    min-height: 0;
+}
+
+/* Контейнер списка */
+.places-list-container {
+    width: 300px; /* Фиксированная ширина, можно настроить */
+    height: 100%; /* Растягивается на всю высоту */
+    overflow-y: auto; /* Скроллинг, если контент превышает высоту */
+    background-color: #f9f9f9; /* Для видимости, можно убрать */
+}
+
+/* Список мест */
+.places-list {
+    max-height: 100%; /* Растягиваем список на всю высоту контейнера */
+    overflow-y: auto; /* Скроллинг для списка */
+}
+
+/* Фильтры */
+.filters-block {
+    flex-shrink: 0; /* Фильтры не сжимаются */
+    min-height: 0;
+}
+
+:root {
+    --social-icon-width: 27px;
+    --social-icon-height: 27px;
+    --filter-icon-width: 16px;
+    --filter-icon-height: 16px;
+    --place-links-filter-icon-width: 20px;
+    --place-links-filter-icon-height: 20px;
+    --popup-min-height-desktop: 150px;
+    --popup-min-height-mobile: 110px;
+    --color-primary: #333;
+    --color-secondary: #3388ff;
+    --color-hover: #555;
+    --color-close-button: #ff4444;
+    --color-text-secondary: #666;
+}
+
+
+=== ./css/terms.html ===
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X60869L0D6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-X60869L0D6');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms and Conditions</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body class="terms-page">
+  <div id="header-container"></div>
+  <div id="terms-container" class="terms-container"></div>
+  <script type="module" src="/js/terms.js"></script> <!-- Исправленный путь -->
+</body>
+</html>
+
+
+=== ./css/filters.css ===
+
+.filters-block {
+    margin: 0;
+    padding: 5px;
+    flex-shrink: 0;
+    min-height: 0;
+    display: block !important; /* Защита от случайного скрытия */
+    position: sticky;
+    z-index: 50;
+    background: #fff;
+}
+
+.filters {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 0;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 0;
+    min-height: 0;
+}
+
+.filter-left,
+.filter-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 0 5px;
+    margin: 0;
+}
+
+.filter-left {
+    position: relative;
+    max-width: 270px;
+}
+
+.filter-left::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px;
+    width: 1px;
+    background: #ccc;
+}
+
+.filter-right {
+    max-width: 750px;
+}
+
+.filter {
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    background: #fff;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 11px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.filter:hover {
+    background: #f5f5f5;
+}
+
+.filter.active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.filter[title] {
+    position: relative;
+}
+
+.filter-icon {
+    width: var(--filter-icon-width);
+    height: var(--filter-icon-height);
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.filter-count {
+    margin-left: 5px;
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    background: #f0f0f0;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, color 0.3s;
+}
+
+.filter.active .filter-count {
+    color: white;
+    background: var(--color-hover);
+}
+
+.filter-reset {
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 9px;
+    background-color: #FFEFEF;
+    font-weight: bold;
+    align-items: center;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.filter-reset:hover {
+    background-color: #ffbbbb;
+}
+
+.desktop-reset {
+    display: block;
+}
+
+.mobile-reset {
+    display: none; /* По умолчанию скрыта */
+}
+
+@media (max-width: 768px) {
+  .filters {
+        display: none !important;
+    }
+    .filters-mobile {
+        display: flex !important; /* Явно задаём видимость */
+        gap: 3px;
+        align-items: flex-start;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        position: relative;
+        z-index: 50;
+    }
+
+    .filter-left, .filter-right {
+        flex: 1 1 auto;
+        max-width: 290px;
+    }
+
+    .filter-left::after {
+        display: none; /* Убираем вертикальный разделитель в мобильной версии */
+    }
+
+    .more-filters-btn,
+    .mobile-reset {
+        font-size: 14px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 9px;
+        background-color: #F2F1F1;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px;
+        margin-right: 0; /* Убираем отступы, которые могут сместить вправо */
+        margin-left: 0; /* Убедимся, что нет лишних отступов слева */
+        align-self: flex-start; /* Выравнивание по левому краю */
+    }
+
+    .more-filters-btn:hover,
+    .mobile-reset:hover {
+        background-color: #e0e0e0;
+    }
+
+    .desktop-reset {
+        display: none;
+    }
+
+    .mobile-reset {
+        display: flex;
+        margin-left: 0;
+    }
+
+    .filter-popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .filter-popup.active {
+        display: flex;
+    }
+
+    .popup-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .popup-content h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .popup-left, .popup-right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        margin-bottom: 15px;
+    }
+
+    .popup-close {
+        padding: 5px 10px;
+        background-color: #90EE90; /* Светло-зелёный оттенок (LightGreen) */
+        border: none;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #fff; /* Белый текст для контраста */
+    }
+
+    .popup-close:hover {
+        background-color: #7CFC00; /* Ещё более яркий зелёный (LawnGreen) */
+    }
+}
+
+/* Базовый фикс для iOS */
+.filters-block,
+.filters-mobile {
+    /* Гарантируем, что элементы всегда видимы на iOS */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    z-index: 50; /* Используем достаточно высокий z-index */
+    position: relative;
+}
+
+/* iOS special fixes */
+@supports (-webkit-touch-callout: none) {
+    /* Для мобильных устройств */
+    @media (max-width: 768px) {
+        .filters-mobile {
+            display: flex !important;
+        }
+    }
+
+    /* Для десктопа */
+    @media (min-width: 769px) {
+        .filters-block {
+            display: block !important;
+        }
+    }
+}
+
+
+=== ./css/header.css ===
+
+header {
+    background: #333;
+    color: white;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    height: 56px;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.title-city {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.burger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+select {
+    padding: 5px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .burger {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 55px;
+        left: 0;
+        background: #333;
+        width: 100%;
+        padding: 20px;
+        flex-direction: column;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+}
+
+
+=== ./css/places.css ===
+
+.places-list {
+    position: absolute;
+    top: 0; /* Оставляем фиксированное значение */
+    left: 15px;
+    width: 350px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+    background: transparent;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+    transition: top 0.3s ease;
+}
+
+/* Остальные стили остаются без изменений */
+.place-card {
+    padding: 15px;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.places-list .place-card:hover {
+    background: #f5f5f5;
+}
+
+.place-card .place-image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    background-color: #eee; /* Заглушка только для больших изображений */
+}
+
+.place-card .place-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.place-card h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.place-card p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.place-links {
+    display: flex;
+    gap: 2px;
+    margin-top: 5px;
+}
+
+.place-links-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.place-links img.filter-icon {
+    width: var(--place-links-filter-icon-width);
+    height: var(--place-links-filter-icon-height);
+    object-fit: contain;
+    /* Убрали background-color для иконок */
+}
+
+.place-links-social img.social-icon {
+    width: var(--social-icon-width);
+    height: var(--social-icon-height);
+    object-fit: contain;
+    /* Убрали background-color для иконок */
+}
+
+.place-links a {
+    color: var(--color-primary);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.place-links a:hover {
+    color: var(--color-hover);
+}
+
+.show-list-btn {
+    position: absolute;
+    top: 90px;
+    right: 20px;
+    padding: 8px 16px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 20;
+    display: none;
+}
+
+.show-list-btn:hover {
+    background: var(--color-hover);
+}
+
+.close-btn {
+    position: fixed;
+    top: 140px;
+    right: 20px;
+    padding: 8px 16px;
+    background: var(--color-close-button);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 40;
+    display: none;
+    z-index: 9999 !important;
+}
+
+.places-list.active ~ .close-btn {
+    display: block;
+    z-index: 9999 !important;
+}
+
+@media (max-width: 768px) {
+    .places-list {
+        display: none;
+        position: fixed;
+        top: 115px !important;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+      /*  min-height: calc(100vh - 55px); */
+        background: #f5f5f5;
+        z-index: 30;
+        overflow-y: auto;
+        padding: 20px;
+        box-sizing: border-box;
+        max-height: calc(100vh - 96px);
+        z-index: 9999 !important;
+    }
+
+    .places-list.active {
+        display: block;
+        top: 115px;
+    }
+
+    .places-list .place-card {
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        padding: 10px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        max-width: 100%;
+    }
+
+    .places-list .place-card .place-image {
+        flex-shrink: 0;
+        width: 50px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        background-color: #eee; /* Заглушка только для больших изображений */
+    }
+
+    .places-list .place-card .place-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .places-list .place-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .map-popup-mobile {
+        display: none !important;
+        position: fixed !important;
+        bottom: 60px !important;
+        top: auto !important;
+        left: 10px !important;
+        right: 10px !important;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 15px 5px 15px 5px;
+        z-index: 1000;
+        max-width: calc(100% - 20px);
+        max-height: 50vh; /* Ограничиваем высоту для прокрутки */
+        overflow-y: auto; /* Добавляем прокрутку */
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        user-select: none;
+    }
+
+    .map-popup-mobile.active {
+        display: flex !important;
+    }
+
+    .map-popup-mobile .place-card {
+        background: #fff;
+        padding: 5px 5px 5px 5px;
+    }
+
+    .map-popup-mobile .place-image {
+        flex-shrink: 0;
+        width: 90px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 4px;
+        background-color: #eee; /* Заглушка только для больших изображений */
+    }
+
+    .map-popup-mobile .place-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: space-between;
+        min-height: var(--popup-min-height-mobile);
+    }
+
+    .map-popup-mobile h3 {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .map-popup-mobile p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--color-text-secondary);
+    }
+
+    .map-popup-mobile .place-links-social {
+        display: flex;
+        gap: 10px;
+        margin-top: auto;
+    }
+
+    .map-popup-mobile .place-links-social img.social-icon {
+        width: var(--social-icon-width);
+        height: var(--social-icon-height);
+        object-fit: contain;
+        /* Убрали background-color для иконок */
+    }
+
+    .map-popup-mobile .place-links-social a:hover img.social-icon {
+        opacity: 0.8;
+    }
+
+    .map-popup-mobile .close-btn-mobile {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        font-size: 20px;
+        color: var(--color-close-button);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        z-index: 1001;
+        outline: none;
+        user-select: none;
+
+    }
+
+    .map-popup-mobile .close-btn-mobile:hover {
+        background: none;
+    }
+
+    .show-list-btn {
+        display: block;
+
+    }
+}
+
+
+=== ./css/footer.css ===
+
+footer {
+    background: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 40px;
+}
+
+footer a {
+    color: #ddd;
+    text-decoration: none;
+}
+
+
+=== ./js/places.js ===
+
+function initPlaces(config, places, map, markers, defaultIcon, customIcon) {
+    const placesList = document.querySelector('.places-list');
+    const showListBtn = document.querySelector('.show-list-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const mapPopupMobile = document.querySelector('.map-popup-mobile');
+    let activeMarker = null;
+
+    // Сохраняем ссылку на активный маркер глобально
+    window.activeMarker = null;
+
+    showListBtn.textContent = config.content.buttonLabels.showList;
+    closeBtn.textContent = config.content.buttonLabels.close;
+
+    showListBtn.addEventListener('click', () => {
+        placesList.classList.add('active');
+        if (window.innerWidth <= 768 && mapPopupMobile.classList.contains('active')) {
+            mapPopupMobile.classList.remove('active');
+            mapPopupMobile.style.display = 'none';
+            resetActiveMarker();
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        placesList.classList.remove('active');
+    });
+
+    // Функция для сброса активного маркера
+    function resetActiveMarker() {
+        if (activeMarker) {
+            activeMarker.setIcon(defaultIcon);
+            activeMarker = null;
+            window.activeMarker = null;
+        }
+    }
+
+    // Настраиваем IntersectionObserver для ленивой загрузки
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+
+                // Добавляем класс для анимации появления
+                element.classList.add('visible');
+
+                // Обрабатываем все изображения в видимом элементе по одному, с приоритизацией
+                const images = Array.from(element.querySelectorAll('img[data-src]'));
+
+                // Начинаем с первого изображения, остальные добавятся в очередь
+                if (images.length > 0) {
+                    loadImageWithFallback(images[0]);
+
+                    // Добавляем остальные изображения в очередь с небольшой задержкой
+                    if (images.length > 1) {
+                        setTimeout(() => {
+                            images.slice(1).forEach(img => {
+                                loadImageWithFallback(img);
+                            });
+                        }, 100);
+                    }
+                }
+
+                // Прекращаем наблюдение за этим элементом
+                observer.unobserve(element);
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '100px', // Увеличиваем область предзагрузки для лучшего UX
+        threshold: 0.1
+    });
+
+    // Функция для создания и привязки попапа к маркеру
+    function createMarkerPopup(marker, place) {
+        const popupContent = document.createElement('div');
+        popupContent.classList.add('place-card-popup-container');
+        popupContent.innerHTML = `
+            <div class="place-card">
+                ${renderPlaceCard(place, config.templates.placeCardPopup, config)}
+            </div>
+        `;
+
+        // НЕ загружаем изображения сразу - они будут загружены только при открытии попапа
+
+        // Привязываем попап к маркеру с отложенной загрузкой изображений
+        marker.bindPopup(popupContent, {
+            maxWidth: 500,
+            className: 'place-popup',
+            closeButton: true,
+            autoClose: true,
+            closeOnClick: false
+        });
+
+        // Загружаем изображения только при открытии попапа
+        marker.on('popupopen', () => {
+            const popupImages = popupContent.querySelectorAll('img[data-src]');
+            popupImages.forEach(img => {
+                loadImageWithFallback(img);
+            });
+        });
+
+        return popupContent;
+    }
+
+    // Обработчик клика по маркеру
+    function handleMarkerClick(marker, place) {
+        console.log('Marker clicked:', place.name);
+
+        if (activeMarker && activeMarker !== marker) {
+            // Сбрасываем предыдущий активный маркер
+            activeMarker.setIcon(defaultIcon);
+            if (window.innerWidth > 768) {
+                activeMarker.closePopup();
+            } else {
+                mapPopupMobile.classList.remove('active');
+                mapPopupMobile.style.display = 'none';
+            }
+        }
+
+        // Устанавливаем новый активный маркер
+        marker.setIcon(customIcon);
+        activeMarker = marker;
+        window.activeMarker = marker;
+
+        // Центрируем карту на маркере
+        map.setView(marker.getLatLng(), 16, { animate: true });
+
+        // Показываем информацию о месте
+        if (window.innerWidth <= 768) {
+            // Мобильный попап
+            showMobilePopup(place, marker);
+        } else {
+            // Десктопный попап
+            setTimeout(() => {
+                marker.openPopup();
+            }, 300);
+        }
+    }
+
+    // Функция для показа мобильного попапа
+    function showMobilePopup(place, marker) {
+        const popupContent = renderPlaceCard(place, config.templates.placeCardPopup, config);
+
+        mapPopupMobile.innerHTML = `
+            <div class="place-card">
+                ${popupContent}
+                <button class="close-btn-mobile">×</button>
+            </div>
+        `;
+
+        // Отображаем попап
+        mapPopupMobile.classList.add('active');
+        mapPopupMobile.style.display = 'flex';
+
+        // Загружаем изображения ПОСЛЕ отображения попапа
+        setTimeout(() => {
+            const mobileImages = mapPopupMobile.querySelectorAll('img[data-src]');
+            mobileImages.forEach(img => {
+                loadImageWithFallback(img);
+            });
+        }, 50);
+
+        // Добавляем обработчик для кнопки закрытия
+        const closeBtn = mapPopupMobile.querySelector('.close-btn-mobile');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Предотвращаем всплытие клика
+                mapPopupMobile.classList.remove('active');
+                mapPopupMobile.style.display = 'none';
+                resetActiveMarker();
+            });
+        }
+
+        // Предотвращаем закрытие попапа при клике на его содержимое
+        const placeCard = mapPopupMobile.querySelector('.place-card');
+        if (placeCard) {
+            placeCard.addEventListener('click', (e) => {
+                e.stopPropagation(); // Предотвращаем всплытие клика
+            });
+        }
+
+        // Закрываем попап при клике вне содержимого
+        mapPopupMobile.addEventListener('click', () => {
+            mapPopupMobile.classList.remove('active');
+            mapPopupMobile.style.display = 'none';
+            resetActiveMarker();
+        }, { once: true });
+    }
+
+    // Основная функция обновления списка мест
+    function updatePlacesList() {
+        console.log('Updating places list...');
+
+        // Очищаем список и маркеры
+        placesList.innerHTML = '';
+        markers.clearLayers();
+
+        // Очищаем очередь изображений при обновлении списка
+        if (window.imageLoadQueue) {
+            window.imageLoadQueue.reset();
+        }
+
+        // Сбрасываем активный маркер
+        resetActiveMarker();
+
+        // Получаем активные фильтры
+        const activeFilters = Array.from(document.querySelectorAll('.filter.active'))
+            .map(filter => filter.dataset.attribute)
+            .filter((value, index, self) => self.indexOf(value) === index); // Удаляем дубликаты
+
+        console.log('Active filters:', activeFilters);
+
+        // Фильтруем места по активным фильтрам
+        const filteredPlaces = activeFilters.length === 0
+            ? places
+            : places.filter(place =>
+                activeFilters.every(filter => place.attributes.includes(filter))
+            );
+
+        console.log('Filtered places count:', filteredPlaces.length);
+
+        // Обновляем счетчики фильтров
+        document.querySelectorAll('.filter').forEach(filter => {
+            const filterKey = filter.dataset.attribute;
+            const countElement = filter.querySelector('.filter-count');
+            if (countElement) {
+                const count = places.filter(place =>
+                    place.attributes.includes(filterKey) &&
+                    (activeFilters.length === 0 ||
+                     activeFilters.filter(f => f !== filterKey) // Исключаем текущий фильтр
+                                  .every(f => place.attributes.includes(f)))
+                ).length;
+                countElement.textContent = count;
+            }
+        });
+
+        // Создаем элементы списка и маркеры с задержкой
+        const createPlaceCards = (startIndex, batchSize) => {
+            const endIndex = Math.min(startIndex + batchSize, filteredPlaces.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const place = filteredPlaces[i];
+
+                // Создаем карточку места
+                const placeCard = document.createElement('div');
+                placeCard.classList.add('place-card');
+                placeCard.dataset.index = i;
+                placeCard.innerHTML = renderPlaceCard(place, config.templates.placeCardList, config);
+                placesList.appendChild(placeCard);
+
+                // Наблюдаем за карточкой для ленивой загрузки
+                observer.observe(placeCard);
+
+                // Создаем маркер
+                const marker = L.marker([place.lat, place.lng], { icon: defaultIcon });
+                marker.dataIndex = i;
+                marker.placeData = place; // Сохраняем данные места в маркере
+                markers.addLayer(marker);
+
+                // Создаем попап для десктопной версии
+                if (window.innerWidth > 768) {
+                    createMarkerPopup(marker, place);
+
+                    // Обработчик закрытия попапа
+                    marker.on('popupclose', () => {
+                        if (activeMarker === marker) {
+                            marker.setIcon(defaultIcon);
+                            activeMarker = null;
+                            window.activeMarker = null;
+                        }
+                    });
+                }
+
+                // Обработчик клика по маркеру
+                marker.on('click', (e) => {
+                    e.originalEvent.stopPropagation();
+                    handleMarkerClick(marker, place);
+                });
+
+                // Обработчик клика по карточке места
+                placeCard.addEventListener('click', () => {
+                    console.log('Place card clicked:', place.name);
+
+                    // Находим маркер, соответствующий карточке
+                    const selectedIndex = parseInt(placeCard.dataset.index);
+                    const selectedMarker = markers.getLayers().find(m => m.dataIndex === selectedIndex);
+
+                    if (!selectedMarker) {
+                        console.error('Marker not found for place:', place.name);
+                        return;
+                    }
+
+                    if (window.innerWidth > 768) {
+                        // Десктопная версия
+                        if (activeMarker && activeMarker !== selectedMarker) {
+                            activeMarker.setIcon(defaultIcon);
+                            activeMarker.closePopup();
+                        }
+
+                        selectedMarker.setIcon(customIcon);
+                        activeMarker = selectedMarker;
+                        window.activeMarker = selectedMarker;
+
+                        map.setView(selectedMarker.getLatLng(), 16, { animate: true });
+
+                        setTimeout(() => {
+                            selectedMarker.openPopup();
+                        }, 300);
+                    } else {
+                        // Мобильная версия
+                        placesList.classList.remove('active'); // Скрываем список
+
+                        if (activeMarker && activeMarker !== selectedMarker) {
+                            activeMarker.setIcon(defaultIcon);
+                        }
+
+                        selectedMarker.setIcon(customIcon);
+                        activeMarker = selectedMarker;
+                        window.activeMarker = selectedMarker;
+
+                        map.setView(selectedMarker.getLatLng(), 16, { animate: true });
+                        showMobilePopup(place, selectedMarker);
+                    }
+                });
+            }
+
+            // Если есть еще места для обработки, создаем следующую партию с задержкой
+            if (endIndex < filteredPlaces.length) {
+                setTimeout(() => {
+                    createPlaceCards(endIndex, batchSize);
+                }, 50); // Небольшая задержка между партиями
+            }
+        };
+
+        // Начинаем с первой партии (20 карточек)
+        createPlaceCards(0, 20);
+
+        // Настраиваем обработку кластеров
+        markers.on('clusterclick', (a) => {
+            console.log('Cluster clicked, child count:', a.layer.getChildCount());
+            const childMarkers = a.layer.getAllChildMarkers();
+
+            if (childMarkers.length === 1) {
+                // Если в кластере только один маркер
+                const marker = childMarkers[0];
+                console.log('Single marker in cluster:', marker.dataIndex);
+
+                if (activeMarker && activeMarker !== marker) {
+                    activeMarker.setIcon(defaultIcon);
+                    if (window.innerWidth > 768) {
+                        activeMarker.closePopup();
+                    } else {
+                        mapPopupMobile.classList.remove('active');
+                        mapPopupMobile.style.display = 'none';
+                    }
+                }
+
+                // Вызываем событие клика на маркере
+                marker.fireEvent('click');
+            } else {
+                // Просто зумим карту до 16, без spiderfy и прочих эффектов
+                map.setView(a.layer.getLatLng(), 16, { animate: true });
+            }
+        });
+
+        // Глобальный обработчик для мобильного попапа
+        mapPopupMobile.addEventListener('click', function(e) {
+            // Проверяем, был ли клик по кнопке закрытия
+            if (e.target.classList.contains('close-btn-mobile')) {
+                e.stopPropagation();
+                mapPopupMobile.classList.remove('active');
+                mapPopupMobile.style.display = 'none';
+                resetActiveMarker();
+            }
+        });
+
+        // Обновляем позицию списка мест
+        adjustPlacesListPosition();
+    }
+
+    // Инициализация списка мест
+    updatePlacesList();
+
+    // Обработчик изменения размера окна
+    window.addEventListener('resize', () => {
+        const wasDesktop = window.innerWidth > 768;
+
+        // Обновляем список при изменении режима отображения
+        setTimeout(() => {
+            const isDesktop = window.innerWidth > 768;
+            if (wasDesktop !== isDesktop) {
+                console.log('Display mode changed, updating places list...');
+                updatePlacesList();
+            } else {
+                // Просто перенастраиваем позицию списка
+                adjustPlacesListPosition();
+            }
+        }, 100);
+    });
+
+    return updatePlacesList;
+}
+
+
+=== ./js/main.js ===
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Получаем ссылку на прелоадер
+    const preloader = document.querySelector('.preloader');
+
+    // Глобальный обработчик ошибок для отладки
+    window.addEventListener('error', (event) => {
+        console.error('Global error caught:', event.error);
+    });
+
+    // Сразу инициализируем глобальную очередь для изображений
+    if (!window.imageLoadQueue) {
+        // Код для инициализации очереди будет внутри utils.js
+        console.log('Image queue initialized');
+    }
+
+    // Глобальная переменная для хранения состояния фильтров
+    window.filterStates = new Map();
+
+    // Инициализируем базовые компоненты
+    Promise.all([
+        loadComponent('components/header.html', 'header')
+    ])
+    .then(() => {
+        // Настраиваем мобильное меню
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+        if (burger && navLinks) {
+            burger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Закрываем меню при клике вне его
+            document.addEventListener('click', (e) => {
+                if (navLinks.classList.contains('active') &&
+                    !navLinks.contains(e.target) &&
+                    !burger.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+
+        // Загружаем конфигурацию и инициализируем приложение
+        const citySelect = document.querySelector('#city-select');
+        if (citySelect) {
+            fetch('data/config.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to load config: ${response.status} ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(config => {
+                    // Сохраняем конфигурацию глобально
+                    window.appConfig = config;
+
+                    // Настраиваем селектор городов (делаем последовательно для ограничения нагрузки)
+                    const setupCityOptions = (cities, index = 0) => {
+                        if (index >= cities.length) return Promise.resolve();
+
+                        const city = cities[index];
+                        const option = document.createElement('option');
+                        option.textContent = city.name;
+                        if (city.disabled) {
+                            option.disabled = true;
+                        }
+                        citySelect.appendChild(option);
+
+                        return new Promise(resolve => setTimeout(() => {
+                            resolve(setupCityOptions(cities, index + 1));
+                        }, 10));
+                    };
+
+                    // Настраиваем навигационные ссылки последовательно
+                    const setupNavLinks = (links, container, index = 0) => {
+                        if (!container || index >= links.length) return Promise.resolve();
+
+                        const link = links[index];
+                        const a = document.createElement('a');
+                        a.href = link.href;
+                        a.textContent = link.label;
+                        container.appendChild(a);
+
+                        return new Promise(resolve => setTimeout(() => {
+                            resolve(setupNavLinks(links, container, index + 1));
+                        }, 10));
+                    };
+
+                    // Последовательная инициализация компонентов с небольшими задержками
+                    setupCityOptions(config.content.cities)
+                        .then(() => {
+                            const navLinksContainer = document.querySelector('#nav-links');
+                            return setupNavLinks(config.content.navLinks, navLinksContainer);
+                        })
+                        .then(() => {
+                            // Настраиваем футер если он есть
+                            const footerContent = document.querySelector('#footer-content');
+                            if (footerContent) {
+                                footerContent.textContent = config.content.footerText;
+                            }
+
+                            console.log('UI components initialized');
+
+                            // Инициализируем карту с задержкой
+                            return new Promise(resolve => {
+                                setTimeout(() => {
+                                    console.log('Initializing map...');
+                                    window.map = initMap(config);
+                                    resolve();
+                                }, 100);
+                            });
+                        })
+                        .then(() => {
+                            // Создаем маркеры и иконки
+                            const markers = createMarkers(config);
+                            const defaultIcon = createDefaultIcon(config);
+                            const customIcon = createCustomIcon(config);
+
+                            // Добавляем слой маркеров на карту
+                            window.map.addLayer(markers);
+
+                            // Настраиваем обработку кластеров
+                            setupClusterInteraction(markers, window.map);
+
+                            // Загружаем данные о местах с небольшой задержкой
+                            return new Promise(resolve => {
+                                setTimeout(() => {
+                                    console.log('Loading places data...');
+                                    fetch('data/places.json')
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error(`Failed to load places: ${response.status} ${response.statusText}`);
+                                            }
+                                            return response.json();
+                                        })
+                                        .then(places => {
+                                            resolve({ places, markers, defaultIcon, customIcon });
+                                        })
+                                        .catch(error => {
+                                            console.error('Error loading places:', error);
+                                            resolve({ places: [], markers, defaultIcon, customIcon });
+                                        });
+                                }, 200);
+                            });
+                        })
+                        .then(({ places, markers, defaultIcon, customIcon }) => {
+                            console.log('Places loaded:', places.length);
+
+                            // Инициализируем список мест с задержкой
+                            return new Promise(resolve => {
+                                setTimeout(() => {
+                                    // Сохраняем функцию обновления списка глобально
+                                    window.updatePlacesList = initPlaces(config, places, window.map, markers, defaultIcon, customIcon);
+                                    resolve({ places, markers });
+                                }, 200);
+                            });
+                        })
+                        .then(({ places, markers }) => {
+                            // Инициализируем фильтры с задержкой
+                            return new Promise(resolve => {
+                                setTimeout(() => {
+                                    initFilters(config, window.updatePlacesList)
+                                        .then(() => {
+                                            console.log('Filters initialized');
+                                            resolve({ places, markers });
+                                        })
+                                        .catch(error => {
+                                            console.error('Error initializing filters:', error);
+                                            resolve({ places, markers });
+                                        });
+                                }, 300);
+                            });
+                        })
+                        .then(({ places, markers }) => {
+                            // Настраиваем позицию списка мест
+                            adjustPlacesListPosition();
+
+                            // Обработка URL-параметров с задержкой
+                            setTimeout(() => {
+                                const urlParams = new URLSearchParams(window.location.search);
+                                const placeParam = urlParams.get('place');
+
+                                if (placeParam) {
+                                    console.log('Opening place from URL:', placeParam);
+                                    // Находим место по ID или имени
+                                    const place = places.find(p =>
+                                        p.id === placeParam ||
+                                        p.name.toLowerCase() === placeParam.toLowerCase());
+
+                                    if (place) {
+                                        // Центрируем карту на месте
+                                        window.map.setView([place.lat, place.lng], 16);
+
+                                        // Находим маркер
+                                        let targetMarker;
+                                        markers.eachLayer(marker => {
+                                            if (marker.placeData &&
+                                                marker.placeData.name === place.name) {
+                                                targetMarker = marker;
+                                            }
+                                        });
+
+                                        // Открываем попап для этого места
+                                        if (targetMarker) {
+                                            setTimeout(() => {
+                                                targetMarker.fireEvent('click');
+                                            }, 500);
+                                        }
+                                    }
+                                }
+
+                                // Скрываем прелоадер после завершения всей инициализации
+                                if (preloader) {
+                                    preloader.classList.add('fade-out');
+                                    setTimeout(() => {
+                                        preloader.style.display = 'none';
+                                    }, 500);
+                                }
+                            }, 500);
+                        })
+                        .catch(error => {
+                            console.error('Error in initialization chain:', error);
+
+                            // Скрываем прелоадер даже при ошибке
+                            if (preloader) {
+                                preloader.classList.add('fade-out');
+                                setTimeout(() => {
+                                    preloader.style.display = 'none';
+                                }, 500);
+                            }
+                        });
+                })
+                .catch(error => {
+                    console.error('Error loading config:', error);
+
+                    // Скрываем прелоадер при ошибке
+                    if (preloader) {
+                        preloader.classList.add('fade-out');
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                        }, 500);
+                    }
+                });
+        }
+    })
+    .catch(error => {
+        console.error('Error loading components:', error);
+
+        // Скрываем прелоадер при ошибке
+        if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    // Резервный таймаут для скрытия прелоадера в случае непредвиденных проблем
+    setTimeout(() => {
+        if (preloader && !preloader.classList.contains('fade-out')) {
+            console.warn('Forcing preloader hide after timeout');
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        }
+    }, 10000); // 10 секунд максимальное время загрузки
+});
+
+
+=== ./js/filters.js ===
+
+async function initFilters(config, updatePlacesList) {
+    // Сохраняем конфигурацию глобально для доступа из других модулей
+    window.appConfig = config;
+
+    const filtersBlock = document.querySelector('.filters-block');
+    const filtersContainer = document.querySelector('.filters');
+    const filterLeft = document.querySelector('.filter-left');
+    const filterRight = document.querySelector('.filter-right');
+
+    if (!filterLeft || !filterRight || !filtersBlock || !filtersContainer) {
+        console.error('Filter containers not found:', { filterLeft, filterRight, filtersBlock, filtersContainer });
+        return;
+    }
+
+    // Функция для принудительного обновления видимости фильтров
+    function forceFilterVisibility() {
+        if (filtersBlock && filtersContainer) {
+            // Принудительное отображение
+            filtersBlock.style.display = 'block';
+            filtersBlock.style.position = 'sticky';
+            filtersBlock.style.top = '56px';
+            filtersBlock.style.zIndex = '1000';
+            filtersBlock.style.width = '100%';
+            filtersBlock.style.left = '0';
+
+            // Принудительное обновление слоя
+            filtersBlock.style.transform = 'translateZ(0)';
+        }
+
+        const filtersMobile = document.querySelector('.filters-mobile');
+        if (filtersMobile) {
+            filtersMobile.style.display = 'flex';
+            filtersMobile.style.position = 'sticky';
+            filtersMobile.style.top = '56px';
+            filtersMobile.style.zIndex = '1000';
+            filtersMobile.style.width = '100%';
+            filtersMobile.style.left = '0';
+            filtersMobile.style.transform = 'translateZ(0)';
+        }
+    }
+
+    // Улучшенная функция для загрузки иконок фильтров
+    async function loadFilterIcons(filterList, filterContainer) {
+        if (!filterList || filterList.length === 0) {
+            console.error('Filter list is empty or undefined:', filterList);
+            return [];
+        }
+
+        // Создаем фильтры с заглушками для иконок
+        const filterElements = [];
+        for (const filterData of filterList) {
+            const filter = document.createElement('div');
+            filter.classList.add('filter');
+            filter.dataset.attribute = filterData.key;
+            filter.title = filterData.tooltip;
+
+            // Создаем контейнер для иконки, но не загружаем её сразу
+            const icon = document.createElement('img');
+            icon.alt = filterData.label;
+            icon.className = 'filter-icon';
+            icon.dataset.src = filterData.icon; // Используем data-src для отложенной загрузки
+
+            const label = document.createElement('span');
+            label.textContent = filterData.label;
+
+            const count = document.createElement('span');
+            count.className = 'filter-count';
+            count.textContent = '0';
+
+            filter.appendChild(icon);
+            filter.appendChild(label);
+            filter.appendChild(count);
+
+            filterContainer.appendChild(filter);
+            filterElements.push({ filter, icon, filterData });
+
+            // Обработчик клика на фильтр
+            filter.addEventListener('click', () => {
+                // Сохраняем состояние в Map
+                const isActive = filter.classList.toggle('active');
+                window.filterStates.set(filterData.key, isActive);
+
+                // Синхронизируем все фильтры с тем же ключом
+                document.querySelectorAll(`.filter[data-attribute="${filterData.key}"]`).forEach(f => {
+                    if (f !== filter) {
+                        if (isActive) {
+                            f.classList.add('active');
+                        } else {
+                            f.classList.remove('active');
+                        }
+                    }
+                });
+
+                updateFiltersInURL();
+                window.updatePlacesList(); // Глобальная ссылка на функцию обновления списка
+            });
+        }
+
+        // Загружаем иконки поэтапно, чтобы не перегружать сервер
+        const loadIconsBatch = async (items, startIndex, batchSize) => {
+            const endIndex = Math.min(startIndex + batchSize, items.length);
+
+            // Загружаем иконки текущей партии последовательно
+            for (let i = startIndex; i < endIndex; i++) {
+                const { icon, filterData } = items[i];
+
+                try {
+                    // Загружаем изображение без добавления в DOM
+                    const tempImg = new Image();
+
+                    await new Promise((resolve, reject) => {
+                        tempImg.onload = resolve;
+                        tempImg.onerror = () => {
+                            console.error(`Failed to load icon for filter ${filterData.label}: ${filterData.icon}`);
+                            reject();
+                        };
+                        tempImg.src = filterData.icon;
+
+                        // Добавляем таймаут для предотвращения бесконечного ожидания
+                        setTimeout(reject, 5000);
+                    }).then(() => {
+                        // Успешно загружено - устанавливаем src для реальной иконки
+                        icon.src = filterData.icon;
+                    }).catch(() => {
+                        // При ошибке используем заглушку
+                        icon.src = '/data/images/placeholder.png';
+                    });
+
+                    // Небольшая пауза между загрузками в одной партии
+                    await new Promise(resolve => setTimeout(resolve, 50));
+
+                } catch (error) {
+                    console.error('Error loading icon:', error);
+                    icon.src = '/data/images/placeholder.png';
+                }
+            }
+
+            // Если остались элементы для загрузки, запускаем следующую партию
+            if (endIndex < items.length) {
+                setTimeout(() => {
+                    loadIconsBatch(items, endIndex, batchSize);
+                }, 100); // Пауза между партиями
+            }
+        };
+
+        // Запускаем загрузку первой партии иконок (по 5 за раз)
+        loadIconsBatch(filterElements, 0, 5);
+
+        return filterElements.map(item => item.filter);
+    }
+
+    // Используем Map для хранения состояния фильтров
+    const filterStates = new Map();
+    window.filterStates = filterStates;
+
+    // Создаём десктопные фильтры в правильном порядке
+    const leftFilters = await loadFilterIcons(config.filters.leftFilters, filterLeft);
+    const rightFilters = await loadFilterIcons(config.filters.rightFilters, filterRight);
+
+    // Добавляем кнопку сброса внутрь .filters после filter-right
+    const resetButton = document.createElement('span');
+    resetButton.classList.add('filter-reset', 'desktop-reset');
+    const resetIcon = document.createElement('img');
+    resetIcon.src = 'data/images/reset.svg';
+    resetIcon.alt = 'Reset';
+    resetIcon.className = 'filter-icon';
+    resetButton.appendChild(resetIcon);
+    filtersContainer.appendChild(resetButton);
+
+    // Мобильная логика
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    let mobileResetButton;
+
+    if (isMobile) {
+        const filtersMobile = document.querySelector('.filters-mobile');
+        if (!filtersMobile) {
+            console.error('Filters-mobile container not found');
+            return;
+        }
+
+        filtersContainer.style.display = 'none'; // Скрываем десктопные фильтры
+        filtersMobile.style.display = 'flex'; // Показываем мобильные
+
+        // Создаём и добавляем элементы в нужном порядке
+        const mobileLeft = document.createElement('div');
+        mobileLeft.classList.add('filter-left');
+        filtersMobile.appendChild(mobileLeft);
+        const mobileLeftFilters = await loadFilterIcons(config.filters.leftFilters.slice(0, 2), mobileLeft); // Левые фильтры
+
+        const moreButton = document.createElement('span');
+        moreButton.classList.add('more-filters-btn');
+        const moreIcon = document.createElement('img');
+        moreIcon.src = 'data/images/more.svg'; // Иконка для More
+        moreIcon.alt = 'More';
+        moreIcon.className = 'filter-icon';
+        moreButton.appendChild(moreIcon);
+        moreButton.appendChild(document.createTextNode(' More')); // Текст с пробелом
+        filtersMobile.appendChild(moreButton); // Кнопка More
+
+        const mobileRight = document.createElement('div');
+        mobileRight.classList.add('filter-right');
+        filtersMobile.appendChild(mobileRight);
+        const mobileRightFilters = await loadFilterIcons(config.filters.rightFilters.slice(0, 3), mobileRight); // Правые фильтры
+
+        mobileResetButton = document.createElement('span');
+        mobileResetButton.classList.add('filter-reset', 'mobile-reset');
+        const mobileResetIcon = document.createElement('img');
+        mobileResetIcon.src = 'data/images/reset.svg'; // Иконка для Reset
+        mobileResetIcon.alt = 'Reset';
+        mobileResetIcon.className = 'filter-icon';
+        mobileResetButton.appendChild(mobileResetIcon);
+        filtersMobile.appendChild(mobileResetButton); // Кнопка Reset
+
+        // Создаём попап
+        const popup = document.createElement('div');
+        popup.classList.add('filter-popup');
+        popup.innerHTML = `
+            <div class="popup-content">
+                <div class="popup-left"></div>
+                <div class="popup-right"></div>
+                <button class="popup-close">OK</button>
+            </div>
+        `;
+        document.body.appendChild(popup);
+
+        // Копируем оставшиеся фильтры в попап
+        const popupLeft = popup.querySelector('.popup-left');
+        const popupRight = popup.querySelector('.popup-right');
+        const popupLeftFilters = await loadFilterIcons(config.filters.leftFilters.slice(2), popupLeft); // Остальные из left
+        const popupRightFilters = await loadFilterIcons(config.filters.rightFilters.slice(3), popupRight); // Остальные из right
+
+        // Обработчик клика по "More"
+        moreButton.addEventListener('click', () => {
+            popup.classList.add('active');
+        });
+
+        // Обработчик закрытия попапа
+        popup.querySelector('.popup-close').addEventListener('click', () => {
+            popup.classList.remove('active');
+        });
+
+        // Предотвращаем закрытие попапа при клике на его содержимое
+        popup.querySelector('.popup-content').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Закрываем попап при клике вне содержимого
+        popup.addEventListener('click', () => {
+            popup.classList.remove('active');
+        });
+    }
+
+    // Применяем фильтры из URL и обновляем счётчики после создания всех фильтров
+    applyFiltersFromURL(() => {
+        updatePlacesList(); // Вызываем после применения фильтров из URL
+    });
+
+    // Принудительное обновление видимости фильтров
+    forceFilterVisibility();
+
+    // Добавляем обработчики событий для обновления видимости
+    window.addEventListener('resize', forceFilterVisibility);
+    window.addEventListener('orientationchange', () => {
+        setTimeout(forceFilterVisibility, 100);
+    });
+
+    // Функция для обновления URL на основе активных фильтров
+    function updateFiltersInURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeFilters = Array.from(document.querySelectorAll('.filter.active'))
+            .map(filter => filter.dataset.attribute)
+            // Удаляем дубликаты
+            .filter((value, index, self) => self.indexOf(value) === index);
+
+        if (activeFilters.length) {
+            urlParams.set('filter', activeFilters.join(','));
+        } else {
+            urlParams.delete('filter');
+        }
+
+        // Преобразуем URLSearchParams в строку и обновляем историю
+        const queryString = urlParams.toString();
+        const url = queryString ? `${window.location.pathname}?${queryString}` : window.location.pathname;
+        window.history.pushState({}, '', url);
+    }
+
+    // Функция для применения фильтров из URL
+    function applyFiltersFromURL(callback) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const filtersFromURL = urlParams.get('filter');
+
+        // Сначала сбрасываем все фильтры
+        document.querySelectorAll('.filter.active').forEach(filter => {
+            filter.classList.remove('active');
+            filterStates.set(filter.dataset.attribute, false);
+        });
+
+        if (filtersFromURL) {
+            const filterArray = filtersFromURL.split(',');
+            const allFilters = document.querySelectorAll('.filter');
+
+            allFilters.forEach(filter => {
+                const isActive = filterArray.includes(filter.dataset.attribute);
+                if (isActive) {
+                    filter.classList.add('active');
+                    filterStates.set(filter.dataset.attribute, true);
+                }
+            });
+        }
+
+        if (callback) callback();
+    }
+
+    // Функция сброса фильтров
+    function resetAllFilters() {
+        document.querySelectorAll('.filter.active').forEach(filter => {
+            filter.classList.remove('active');
+            filterStates.set(filter.dataset.attribute, false);
+        });
+
+        updateFiltersInURL();
+        resetMap();
+        updatePlacesList(); // Обновляем счётчики
+    }
+
+    // Обработчик кнопки сброса на десктопе
+    resetButton.addEventListener('click', resetAllFilters);
+
+    // Обработчик кнопки сброса на мобильном
+    if (mobileResetButton) {
+        mobileResetButton.addEventListener('click', resetAllFilters);
+    }
+
+    // Функция для сброса карты (используем mapSettings)
+    function resetMap() {
+        if (window.map && config.mapSettings) {
+            const initialLat = config.mapSettings.center[0] || 45.25;
+            const initialLng = config.mapSettings.center[1] || 19.84;
+            const initialZoom = config.mapSettings.initialZoom || 13;
+
+            window.map.setView([initialLat, initialLng], initialZoom);
+            window.map.closePopup();
+
+            // Если есть активный маркер, сбрасываем его иконку
+            if (window.activeMarker) {
+                window.activeMarker.setIcon(createDefaultIcon(config));
+                window.activeMarker = null;
+            }
+        }
+    }
+
+    // Вызываем adjustPlacesListPosition для проверки рендеринга
+    adjustPlacesListPosition();
+
+    // Возвращаем Map с состояниями фильтров для использования в других модулях
+    return filterStates;
+}
+
+function adjustPlacesListPosition() {
+    const filtersBlock = document.querySelector('.filters-block');
+    const placesList = document.querySelector('.places-list');
+    if (filtersBlock && placesList) {
+        const filtersRect = filtersBlock.getBoundingClientRect();
+        const filtersHeight = filtersRect.height;
+        const headerHeight = 56; // Высота шапки
+
+        // Устанавливаем максимальную высоту с учётом шапки и фильтров (без футера)
+        placesList.style.maxHeight = `calc(100vh - ${headerHeight + filtersHeight}px)`;
+
+        // Отступ от верха должен быть 0
+        placesList.style.top = '0';
+    } else {
+        console.warn('Filters block or places list not found for adjustment');
+    }
+}
+
+// Добавляем слушатель событий для изменения размера окна
+window.addEventListener('resize', () => {
+    adjustPlacesListPosition();
+});
+
+// Глобальная функция для принудительного обновления видимости фильтров
+window.forceFilterVisibility = function() {
+    const filtersBlock = document.querySelector('.filters-block');
+    const filtersMobile = document.querySelector('.filters-mobile');
+
+    if (filtersBlock) {
+        filtersBlock.style.display = 'block';
+        filtersBlock.style.position = 'sticky';
+        filtersBlock.style.top = '56px';
+        filtersBlock.style.zIndex = '1000';
+        filtersBlock.style.width = '100%';
+        filtersBlock.style.left = '0';
+        filtersBlock.style.transform = 'translateZ(0)';
+    }
+
+    if (filtersMobile) {
+        filtersMobile.style.display = 'flex';
+        filtersMobile.style.position = 'sticky';
+        filtersMobile.style.top = '56px';
+        filtersMobile.style.zIndex = '1000';
+        filtersMobile.style.width = '100%';
+        filtersMobile.style.left = '0';
+        filtersMobile.style.transform = 'translateZ(0)';
+    }
+};
+
+
+=== ./js/utils.js ===
+
+// Глобальная очередь для загрузки изображений
+window.imageLoadQueue = {
+    queue: [],              // Очередь изображений для загрузки
+    processing: 0,          // Количество текущих загрузок
+    maxConcurrent: 4,       // Максимальное количество одновременных загрузок
+    retryDelay: 500,        // Задержка перед повторной попыткой в мс
+    maxRetries: 3,          // Максимальное количество повторных попыток
+    idleCallbacks: [],      // Список функций для вызова, когда очередь пуста
+
+    // Добавление нового изображения в очередь
+    add: function(img, fallbackSrc = '/data/images/placeholder.png') {
+        if (!img || (!img.dataset.src && !img.src) || img.loadQueued) return;
+
+        // Помечаем изображение как добавленное в очередь
+        img.loadQueued = true;
+
+        // Добавляем задачу в очередь
+        this.queue.push({
+            img: img,
+            src: img.dataset.src || img.src,
+            fallbackSrc: fallbackSrc,
+            retries: 0
+        });
+
+        // Запускаем обработку очереди
+        this.process();
+    },
+
+    // Обработка очереди
+    process: function() {
+        // Если уже достигнут лимит параллельных загрузок, выходим
+        if (this.processing >= this.maxConcurrent) return;
+
+        // Если очередь пуста, выходим
+        if (this.queue.length === 0) {
+            // Если нет активных загрузок, вызываем колбэки "очередь пуста"
+            if (this.processing === 0) {
+                this.idleCallbacks.forEach(callback => callback());
+                this.idleCallbacks = [];
+            }
+            return;
+        }
+
+        // Получаем следующее изображение из очереди
+        const task = this.queue.shift();
+
+        // Увеличиваем счетчик активных загрузок
+        this.processing++;
+
+        // Создаем временное изображение для предзагрузки
+        const tempImg = new Image();
+
+        // Обработчик успешной загрузки
+        tempImg.onload = () => {
+            // Если изображение все еще присутствует в DOM
+            if (document.body.contains(task.img)) {
+                task.img.src = task.src;
+
+                // Удаляем атрибут data-src, если он есть
+                if (task.img.dataset.src) {
+                    task.img.removeAttribute('data-src');
+                }
+            }
+
+            // Уменьшаем счетчик активных загрузок
+            this.processing--;
+
+            // Продолжаем обработку очереди
+            this.process();
+        };
+
+        // Обработчик ошибки
+        tempImg.onerror = () => {
+            // Если превышено количество попыток, используем запасное изображение
+            if (task.retries >= this.maxRetries) {
+                console.error(`Failed to load image after ${this.maxRetries} attempts: ${task.src}`);
+
+                // Устанавливаем запасное изображение, если изображение все еще в DOM
+                if (document.body.contains(task.img)) {
+                    task.img.src = task.fallbackSrc;
+                }
+
+                // Уменьшаем счетчик активных загрузок
+                this.processing--;
+
+                // Продолжаем обработку очереди
+                this.process();
+                return;
+            }
+
+            // Увеличиваем счетчик попыток
+            task.retries++;
+
+            // Возвращаем задачу в очередь с задержкой
+            setTimeout(() => {
+                // Добавляем обратно в очередь только если изображение все еще в DOM
+                if (document.body.contains(task.img)) {
+                    this.queue.push(task);
+                }
+
+                // Уменьшаем счетчик активных загрузок
+                this.processing--;
+
+                // Продолжаем обработку очереди
+                this.process();
+            }, this.retryDelay * task.retries); // Увеличиваем задержку с каждой попыткой
+        };
+
+        // Начинаем загрузку
+        tempImg.src = task.src;
+    },
+
+    // Сброс очереди (для случаев, когда нужно очистить всю очередь)
+    reset: function() {
+        this.queue = [];
+        this.processing = 0;
+    },
+
+    // Добавление колбэка, который будет вызван, когда очередь опустеет
+    onIdle: function(callback) {
+        if (typeof callback === 'function') {
+            if (this.queue.length === 0 && this.processing === 0) {
+                // Если очередь уже пуста, вызываем сразу
+                callback();
+            } else {
+                // Иначе добавляем в список ожидания
+                this.idleCallbacks.push(callback);
+            }
+        }
+    }
+};
+
+function renderPlaceCard(place, template, config) {
+    const evaluateTemplate = new Function('place', 'config', 'return `' + template + '`');
+    let html = evaluateTemplate(place, config);
+    // Заменяем src на data-src для отложенной загрузки
+    html = html.replace(/src="/g, 'data-src="');
+    return html;
+}
+
+function loadComponent(url, elementId) {
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load component ${url}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById(elementId).innerHTML = data;
+        })
+        .catch(error => console.error(`Ошибка загрузки компонента ${elementId}:`, error));
+}
+
+// Функция для загрузки изображений с обработкой ошибок
+function loadImageWithFallback(img, fallbackSrc = '/data/images/placeholder.png') {
+    if (!img || (!img.dataset.src && !img.src)) return;
+
+    // Добавляем изображение в очередь загрузки
+    window.imageLoadQueue.add(img, fallbackSrc);
+}
+
+
+=== ./js/map.js ===
+
+function initMap(config) {
+    // Создаем карту с дополнительными опциями для улучшенной отзывчивости
+    const map = L.map('map', {
+        center: config.mapSettings.center,
+        zoom: config.mapSettings.initialZoom,
+        scrollWheelZoom: true,
+        closePopupOnClick: true,
+        tap: true, // Включаем нативную поддержку тач-событий
+        attributionControl: false, // Отключаем стандартный контрол атрибуции
+        zoomControl: false // Отключаем стандартный контрол зума
+    });
+
+    // Добавляем тайл-слой с дополнительными настройками
+    L.tileLayer(config.mapSettings.tileLayer.url, {
+        attribution: config.mapSettings.tileLayer.attribution,
+        subdomains: config.mapSettings.tileLayer.subdomains,
+        maxZoom: config.mapSettings.maxZoom,
+        minZoom: config.mapSettings.initialZoom - 2, // Устанавливаем минимальный зум
+        preferCanvas: true // Использование canvas для рендеринга
+    }).addTo(map);
+
+    // Добавляем собственный контрол атрибуции с фиксированным позиционированием
+    L.control.attribution({
+        position: 'bottomright',
+        prefix: false
+    }).addTo(map);
+
+    // Добавляем обработчик клика по карте для закрытия всех попапов
+    map.on('click', () => {
+        map.closePopup();
+    });
+
+    // Улучшенная функция обновления размера карты
+    function updateMapSize() {
+        // Принудительное обновление размера с небольшой задержкой
+        setTimeout(() => {
+            map.invalidateSize({
+                debounceMoveend: true,
+                pan: false
+            });
+        }, 100);
+    }
+
+    // Обработчики для принудительного обновления размера
+    window.addEventListener('resize', updateMapSize);
+    window.addEventListener('orientationchange', updateMapSize);
+
+    // Принудительное обновление размера при загрузке
+    document.addEventListener('DOMContentLoaded', () => {
+        // Несколько последовательных вызовов для надежности
+        updateMapSize();
+        setTimeout(updateMapSize, 100);
+        setTimeout(updateMapSize, 500);
+    });
+
+    // Фикс для iOS и мобильных устройств
+    function fixMobileMapRendering() {
+        // Принудительное обновление слоя
+        map.getContainer().style.transform = 'translateZ(0)';
+
+        // Дополнительные стили для контейнера карты
+        const mapContainer = map.getContainer();
+        mapContainer.style.position = 'absolute';
+        mapContainer.style.top = '0';
+        mapContainer.style.left = '0';
+        mapContainer.style.width = '100%';
+        mapContainer.style.height = '100%';
+    }
+
+    // Применяем фикс для мобильных устройств
+    fixMobileMapRendering();
+
+    // Периодическое обновление размера для надежности
+    const intervalId = setInterval(() => {
+        updateMapSize();
+    }, 1000);
+
+    // Очищаем интервал при закрытии страницы
+    window.addEventListener('beforeunload', () => {
+        clearInterval(intervalId);
+    });
+
+    return map;
+}
+
+function createMarkers(config) {
+    return L.markerClusterGroup({
+        iconCreateFunction: function(cluster) {
+            return L.divIcon({
+                html: config.mapSettings.clusterSettings.clusterIconTemplate.replace('${cluster.getChildCount()}', cluster.getChildCount()),
+                className: 'marker-cluster',
+                iconSize: [30, 30]
+            });
+        },
+        disableClusteringAtZoom: config.mapSettings.clusterSettings.disableClusteringAtZoom,
+        spiderfyOnMaxZoom: false,
+        maxClusterRadius: config.mapSettings.clusterSettings.maxClusterRadius,
+        zoomToBoundsOnClick: false
+    });
+}
+
+function createDefaultIcon(config) {
+    return L.divIcon({
+        className: config.markerSettings.defaultIcon.className,
+        iconSize: config.markerSettings.defaultIcon.iconSize,
+        iconAnchor: config.markerSettings.defaultIcon.iconAnchor
+    });
+}
+
+function createCustomIcon(config) {
+    return L.divIcon({
+        className: config.markerSettings.customIcon.className,
+        iconSize: config.markerSettings.customIcon.iconSize,
+        iconAnchor: config.markerSettings.customIcon.iconAnchor,
+        popupAnchor: config.markerSettings.customIcon.popupAnchor
+    });
+}
+
+function setupClusterInteraction(markers, map) {
+    // Сохраняем ссылку на активный маркер в глобальной области
+    window.activeMarker = null;
+
+    markers.on('clusterclick', function (event) {
+        const cluster = event.layer;
+        const childMarkers = cluster.getAllChildMarkers();
+
+        if (childMarkers.length === 1) {
+            // Если в кластере один маркер, имитируем клик по нему
+            const marker = childMarkers[0];
+
+            // Закрываем существующий попап если есть
+            if (window.activeMarker && window.activeMarker !== marker) {
+                window.activeMarker.fireEvent('popupclose');
+                window.activeMarker.setIcon(createDefaultIcon(window.appConfig));
+                if (window.activeMarker._popup) {
+                    window.activeMarker.closePopup();
+                }
+            }
+
+            marker.fireEvent('click');
+            return;
+        }
+
+        // Для кластеров с несколькими маркерами - просто зумим до 16
+        map.setView(cluster.getLatLng(), 16, { animate: true });
+    });
+
+    // Обновляем кластеры при изменении зума
+    map.on('zoomend', () => {
+        // Просто обновляем кластеры, не добавляя никаких эффектов
+        markers.refreshClusters();
+    });
+}
+
+// Упрощенная функция обновления кластеров
+function refreshClustersSafely(map, markers) {
+    // Просто обновляем кластеры
+    markers.refreshClusters();
+
+    // Обновляем карту
+    map.invalidateSize();
+}
+
+
+=== ./components/footer.html ===
+
+<div id="footer-content"></div>
+
+
+=== ./components/header.html ===
+
+<div class="header-container">
+    <div class="title-city">
+        <h1>Places</h1>
+        <select id="city-select"></select>
+    </div>
+    <div class="burger">☰</div>
+    <nav id="nav-links" class="nav-links"></nav>
+</div>
+
+
+=== ./data/config.json ===
+
+{
+  "filters": {
+    "leftFilters": [
+      {
+        "key": "no_smoking",
+        "label": "Smoke-Free",
+        "tooltip": "Places where smoking is not allowed",
+        "icon": "/data/images/nosmoking.svg"
+      },
+      {
+        "key": "terrace",
+        "label": "Terrace",
+        "tooltip": "Places with an outdoor seating area",
+        "icon": "/data/images/terrece.svg"
+      },
+      {
+        "key": "smoke",
+        "label": "Smoking Allowed",
+        "tooltip": "Places where smoking is permitted (may have separate areas)",
+        "icon": "/data/images/smoke.svg"
+      },
+      {
+        "key": "pets_allowed",
+        "label": "Pet-Friendly",
+        "tooltip": "Places where you can bring your pets",
+        "icon": "/data/images/dog.svg"
+      }
+    ],
+    "rightFilters": [
+      {
+        "key": "coffee_shop",
+        "label": "Coffee Shop",
+        "tooltip": "Places specializing in coffee and light snacks",
+        "icon": "/data/images/coffee.svg"
+      },
+      {
+        "key": "cafe",
+        "label": "Cafe",
+        "tooltip": "Casual spots for coffee, tea, and light meals",
+        "icon": "/data/images/cafe.svg"
+      },
+      {
+        "key": "bar",
+        "label": "Bar",
+        "tooltip": "Places offering alcoholic drinks like beer, wine, or cocktails",
+        "icon": "/data/images/bar.svg"
+      },
+      {
+        "key": "food",
+        "label": "Full Meals",
+        "tooltip": "Places offering main courses and substantial meals",
+        "icon": "/data/images/food.svg"
+      },
+      {
+        "key": "breakfast",
+        "label": "Breakfast",
+        "tooltip": "Places serving breakfast options",
+        "icon": "/data/images/breakfast.svg"
+      },
+      {
+        "key": "desserts",
+        "label": "Desserts",
+        "tooltip": "Places offering sweets, pastries, or desserts",
+        "icon": "/data/images/cake.svg"
+      },
+      {
+        "key": "snacks",
+        "label": "Snacks",
+        "tooltip": "Places with light bites like sandwiches or small plates",
+        "icon": "/data/images/sandwich.svg"
+      },
+      {
+        "key": "vegan",
+        "label": "Vegan Options",
+        "tooltip": "Places with vegan-friendly menu items",
+        "icon": "/data/images/vegan.svg"
+      },
+      {
+        "key": "specialty",
+        "label": "Specialty Coffee",
+        "tooltip": "Places offering high-quality or alternative coffee options",
+        "icon": "/data/images/coffee-pot.svg"
+      },
+      {
+        "key": "beans_sale",
+        "label": "Coffee Beans for Sale",
+        "tooltip": "Places where you can buy coffee beans",
+        "icon": "/data/images/coffee-beans.svg"
+      },
+      {
+        "key": "beer",
+        "label": "Craft Beer",
+        "tooltip": "Places offering craft or specialty beers",
+        "icon": "/data/images/beer.svg"
+      },
+      {
+        "key": "wine",
+        "label": "Wine",
+        "tooltip": "Places with a selection of wines",
+        "icon": "/data/images/wine.svg"
+      },
+      {
+        "key": "ice_cream",
+        "label": "Ice Cream",
+        "tooltip": "Places serving ice cream or frozen treats",
+        "icon": "/data/images/ice-cream.svg"
+      }
+    ]
+  },
+  "templates": {
+    "placeCardList": "<img src=\"${place.image}\" alt=\"${place.name}\" class=\"place-image\">\n<div class=\"place-content\">\n  <h3>${place.name}</h3>\n  <p>${place.shirt_description}</p>\n  <div class=\"place-links\">${place.attributes.map(attr => { const filter = config.filters.leftFilters.concat(config.filters.rightFilters).find(f => f.key === attr); return filter?.icon ? `<img src=\"${filter.icon}\" alt=\"${attr}\" title=\"${filter.tooltip}\" class=\"filter-icon\">` : ''; }).join('')}</div>\n</div>",
+    "placeCardPopup": "<img src=\"${place.image}\" alt=\"${place.name}\" class=\"place-image\">\n<div class=\"place-content\">\n  <h3>${place.name}</h3>\n  <p>${place.description}</p>\n  <div class=\"place-links-social\">\n    ${place.instagram ? `<a href=\"${place.instagram}\" target=\"_blank\"><img src=\"/data/images/instagram.svg\" alt=\"Instagram\" class=\"social-icon\"></a>` : ''}\n    ${place.maps_url ? `<a href=\"${place.maps_url}\" target=\"_blank\"><img src=\"/data/images/google.svg\" alt=\"Google Maps\" class=\"social-icon\"></a>` : ''}\n  </div>\n</div>"
+  },
+  "mapSettings": {
+    "center": [45.25010, 19.83756],
+    "initialZoom": 14,
+    "maxZoom": 19,
+    "clusterSettings": {
+      "disableClusteringAtZoom": 16,
+      "maxClusterRadius": 80,
+      "spiderfyOnMaxZoom": true,
+      "clusterIconTemplate": "<div style=\"background-color: #3388ff; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);\">${cluster.getChildCount()}</div>"
+    },
+    "tileLayer": {
+      "url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      "attribution": "© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors © <a href=\"https://carto.com/attributions\">CARTO</a>",
+      "subdomains": "abcd"
+    }
+  },
+  "markerSettings": {
+    "defaultIcon": {
+      "className": "custom-marker-default",
+      "iconSize": [12, 12],
+      "iconAnchor": [6, 6]
+    },
+    "customIcon": {
+      "className": "custom-marker-selected",
+      "iconSize": [30, 40],
+      "iconAnchor": [15, 40],
+      "popupAnchor": [0, -40]
+    }
+  },
+  "styleSettings": {
+    "socialIconSize": [27, 27],
+    "filterIconSize": [16, 16],
+    "placeLinksFilterIconSize": [20, 20],
+    "popupMinHeight": {
+      "desktop": 150,
+      "mobile": 110
+    },
+    "colors": {
+      "primary": "#333",
+      "secondary": "#3388ff",
+      "hover": "#555",
+      "closeButton": "#ff4444",
+      "textSecondary": "#666"
+    }
+  },
+  "content": {
+    "cities": [
+      { "name": "Нови Сад", "disabled": false },
+      { "name": "Белград (Soon)", "disabled": true }
+    ],
+    "navLinks": [
+      { "label": "О нас", "href": "#" },
+      { "label": "О рекламе", "href": "#" },
+      { "label": "Контакты", "href": "#" },
+      { "label": "FAQ", "href": "#" }
+    ],
+    "buttonLabels": {
+      "showList": "Show list",
+      "close": "Close"
+    },
+    "footerText": "© 2025 Places. "
+  }
+}
+
+
+=== ./data/places.json ===
+
+[
+    {
+        "name": "Biciklana 23",
+        "lat": 45.24016169,
+        "lng": 19.84743287,
+        "shirt_description": "Completely non-smoking cafe and bicycle service",
+        "description": "Completely non-smoking cafe and bicycle service, the menu can include desserts and sandwiches. Bicycles can be rented during the warmer months.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/biciklana23\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/cCWtgfoQ8YfxmLwS7",
+        "image": "/data/images/biciklana.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks",
+            "terrace",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Le Bol NS",
+        "lat": 45.25599974,
+        "lng": 19.84919648,
+        "shirt_description": "Breakfast all day & Smoke free & Coworking",
+        "description": "Большое меню: горячее, завтраки и дессерты, есть вино, закуски и, конечно, кофе. \r\n<br>Небольшая и уютная терраса",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/lebolns\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/XWRaLduEZV8YgXcw5",
+        "image": "/data/images/lebol.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "desserts",
+            "food",
+            "terrace",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Sweet & Green",
+        "lat": 45.25609233,
+        "lng": 19.84676623,
+        "shirt_description": "Healthy salads, porridge, soups and desserts. There are vegetarian options on the menu.",
+        "description": "Healthy salads, porridge, soups and desserts. There are vegetarian options on the menu.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/sweetandgreen.rs\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/Ffq17dbGzLRgUnvAA",
+        "image": "/data/images/sweetgreen.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "cafe",
+            "vegan"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Vege Vegan - Restoran zdrave hrane",
+        "lat": 45.25405343,
+        "lng": 19.8397541,
+        "shirt_description": "Vegetarian menu and desserts. A small courtyard with several tables.",
+        "description": "Vegetarian menu and desserts. A small courtyard with several tables.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/vegeveganorganicfood",
+        "maps_url": "https:\/\/goo.gl\/maps\/DSHs3XPzWqYeJ2Si8",
+        "image": "/data/images/vegevegan.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "vegan",
+            "terrace",
+            "cafe"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Organic factory",
+        "lat": 45.24006898,
+        "lng": 19.83740056,
+        "shirt_description": "A small restaurant with a varied menu, breakfasts and pastries. Please note the opening hours (open until 14:00)",
+        "description": "A small restaurant with a varied menu, breakfasts and pastries. Please note the opening hours (open until 14:00)",
+        "link": "",
+        "instagram": "https:\/\/www.facebook.com\/organicfactory.novisad\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/U6s8M6K2w5jzdrYJ6",
+        "image": "/data/images/organicfactory.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "pets_allowed",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "ANANDA VEGAN RESTAURANT",
+        "lat": 45.24948867,
+        "lng": 19.83951697,
+        "shirt_description": "Vegetarian restaurant in the city center. Full menu: breakfasts, main courses, desserts and drinks.",
+        "description": "Vegetarian restaurant in the city center. Full menu: breakfasts, main courses, desserts and drinks.",
+        "link": "https:\/\/ananda.rs\/",
+        "instagram": "https:\/\/www.instagram.com\/ananda_vegan_restaurant\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/xfHhYgozHhqJBpwRA",
+        "image": "/data/images/ananda.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "food",
+            "vegan",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Bulevar Books",
+        "lat": 45.25333086,
+        "lng": 19.84536255,
+        "shirt_description": "It's a bookstore (I recommend it), they host music events, but you can also stop by for coffee.",
+        "description": "It's a bookstore (I recommend it), they host music events, but you can also stop by for coffee.",
+        "link": "https:\/\/bulevarbooks.com\/",
+        "instagram": "https:\/\/www.instagram.com\/bulevarbooks\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/nU2SUP9ScpwjAyzk7",
+        "image": "/data/images/bulevar.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Gabby Caffe & Bar",
+        "lat": 45.2568215,
+        "lng": 19.84845344,
+        "shirt_description": "Cafe-bar in the city center. The menu includes breakfasts, drinks, desserts and main dishes.",
+        "description": "Cafe-bar in the city center. The menu includes breakfasts, drinks, desserts and main dishes.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/cafe_gabby\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/X9KGHUybdjUT7PAKA",
+        "image": "/data/images/gabby.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "bar",
+            "desserts",
+            "food",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Crni Ovan",
+        "lat": 45.25619865,
+        "lng": 19.84828467,
+        "shirt_description": "A very pet-friendly bar hidden in a courtyard in the city center.",
+        "description": "🐕‍🦺 Spot for doggos, coffee, booze&brews, activism & solidarity. 100% smokefree. 100% pet friendly🐾🐾 ♥️no place for racism, sexism, homophobia",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/crniovan\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/jMF1AGERLYxAh9Lt6",
+        "image": "/data/images/crniovan.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "cafe"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Fresh food caffe 021",
+        "lat": 45.25482795,
+        "lng": 19.83122664,
+        "shirt_description": "A small, cozy health food cafe. Porridges, sandwiches, desserts, and main dishes. ",
+        "description": "A small, cozy health food cafe. Porridges, sandwiches, desserts, and main dishes. \r\nA few tables inside and outside. You can get takeout",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/freshfoodcaffe021\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/ccJgtABKyLaFTCY27",
+        "image": "/data/images/freshfood.jpg",
+        "attributes": [
+            "no_smoking",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Šećernema",
+        "lat": 45.24923323,
+        "lng": 19.83931447,
+        "shirt_description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/secernema\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/j2fUkvcEVqASgYWR8",
+        "image": "/data/images/secernema.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop",
+            "desserts",
+            "vegan",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Šećernema Liman",
+        "lat": 45.24135059,
+        "lng": 19.84760767,
+        "shirt_description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/secernema\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/b5WSeH2Tuwb3bdni6",
+        "image": "/data/images/secernema.jpg",
+        "attributes": [
+            "desserts",
+            "vegan"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Izlet",
+        "lat": 45.25620685,
+        "lng": 19.85169916,
+        "shirt_description": "Coffee and delicious pastries. The cafe is small, but you can take a table and sit in the park.",
+        "description": "Coffee and delicious pastries. The cafe is small, but you can take a table and sit in the park.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/_izlet",
+        "maps_url": "https:\/\/goo.gl\/maps\/tTq27yBpApmx4cDr9",
+        "image": "/data/images/izlet.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Toster Bar",
+        "lat": 45.2562211,
+        "lng": 19.84431976,
+        "shirt_description": "Burgers from original recipes",
+        "description": "Homemade sauces made from original recipes, locally sourced meat, additive-free bread, and a bean salad together make a perfect combination that leaves no one indifferent.",
+        "link": "https:\/\/tosterbar.rs\/",
+        "instagram": "https:\/\/www.instagram.com\/tosterbar\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/mpJFeVnAKbA3pVXv9",
+        "image": "/data/images/toster.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "FREESHKA COFFEE",
+        "lat": 45.24698,
+        "lng": 19.83928,
+        "shirt_description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/freeshkakafa\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/PFdDrw9dnbdbnnJ6A",
+        "image": "/data/images/freeshka.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Block 32",
+        "lat": 45.2605,
+        "lng": 19.8303,
+        "shirt_description": "The coffee shop is now open on Mondays as well. Delicious classic and alternative coffee.",
+        "description": "The coffee shop is now open on Mondays as well. Delicious classic and alternative coffee.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeeculture32",
+        "maps_url": "https:\/\/goo.gl\/maps\/BdzhqNcV7bDHJC6U8",
+        "image": "/data/images/block32.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Macchiato Fax",
+        "lat": 45.2491578,
+        "lng": 19.849806,
+        "shirt_description": "Restaurant with an extensive menu and terrace. There is a small non-smoking area (but cigarette smoke may still be present)",
+        "description": "Restaurant with an extensive menu and terrace. There is a small non-smoking area (but cigarette smoke may still be present)",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/macchiatofax\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/Z7eFs4x52LEv8WuH6",
+        "image": "/data/images/fax.jpg",
+        "attributes": [
+            "smoke",
+            "terrace",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Zenit Books, Coffee, Bar, & Bookstore",
+        "lat": 45.2570533,
+        "lng": 19.840729,
+        "shirt_description": "A bookstore and café bar. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present",
+        "description": "A bookstore and café bar. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. There are events and music, coffee, snacks and alcohol.",
+        "link": "https:\/\/zenitbooks.com\/",
+        "instagram": "",
+        "maps_url": "https:\/\/goo.gl\/maps\/xk9spuW9uGgq2nuG9",
+        "image": "/data/images/zenit.webp",
+        "attributes": [
+            "smoke",
+            "pets_allowed",
+            "coffee_shop",
+            "bar",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "CoffeeRide",
+        "lat": 45.2505635,
+        "lng": 19.8332106,
+        "shirt_description": "A little cafe & bicycle workshop",
+        "description": "A little cafe & bicycle workshop",
+        "link": "https:\/\/coffeeride.day\/",
+        "instagram": "https:\/\/www.instagram.com\/CoffeeRide.ns",
+        "maps_url": "https:\/\/maps.app.goo.gl\/8RX4Sr7XJ8sQdZ2A7",
+        "image": "/data/images/cofferide.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Urbano Kafa & Voće",
+        "lat": 45.2487,
+        "lng": 19.8329,
+        "shirt_description": "Coffee shop on Braće Ribnikar Street, coffee, tea and fresh juices.",
+        "description": "Coffee shop on Braće Ribnikar Street, coffee, tea and fresh juices.",
+        "link": "",
+        "instagram": "https:\/\/instagram.com\/urbano_coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/dmLACj19WzFCnq3J7",
+        "image": "/data/images/urbano.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Pendžer",
+        "lat": 45.2608,
+        "lng": 19.8198,
+        "shirt_description": "A cozy and charming coffee shop with a great selection of alternative coffee. Tea, hot chocolate, croissants, and oreshki with sweetened condensed milk.",
+        "description": "A cozy and charming coffee shop with a great selection of alternative coffee. Tea, hot chocolate, croissants, and oreshki with sweetened condensed milk.",
+        "link": "",
+        "instagram": "https:\/\/instagram.com\/pendzer_coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/1BrGKzswxXEgimK8A",
+        "image": "/data/images/pendzer.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts",
+            "beans_sale"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafetea",
+        "lat": 45.2616,
+        "lng": 19.852,
+        "shirt_description": "A cozy coffee shop with delicious coffee, offering specialty coffee beans.",
+        "description": "A cozy coffee shop with delicious coffee, offering specialty coffee beans.",
+        "link": "",
+        "instagram": "https:\/\/instagram.com\/kafetea_coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/kNhFBFpAPjoPmntm7",
+        "image": "/data/images/kafetea.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Bruno Bar",
+        "lat": 45.2422,
+        "lng": 19.8253,
+        "shirt_description": "Craft Beer, Cocktails, Liquors",
+        "description": "Craft Beer, Cocktails, Liquors",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/brunobar.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/cKjmyUCiW44XKJK37",
+        "image": "/data/images/bruno.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "beer",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "TEPLICA Wine bar",
+        "lat": 45.2522,
+        "lng": 19.841,
+        "shirt_description": "Cozy corner of sips and stories. Wine shop and small wine bar. ",
+        "description": "Cozy corner of sips and stories. Wine shop and small wine bar. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/teplica.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/cekHQ4FHxuGxsfwC7",
+        "image": "/data/images/teplica.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "wine",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Martin kafa Dunavska",
+        "lat": 45.25696,
+        "lng": 19.85002,
+        "shirt_description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/martinkafa\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/nmmNdAPa7Zv3snmq6",
+        "image": "/data/images/martin1.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Martin Kafa Železnička",
+        "lat": 45.25175,
+        "lng": 19.84205,
+        "shirt_description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/martinkafa\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/tNQfAYjoGeaG6hA18",
+        "image": "/data/images/martin1.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Izlet 2",
+        "lat": 45.25682,
+        "lng": 19.84666,
+        "shirt_description": "New Izlet. Delicious pastries, sandwiches and coffee. The cafe is small and without a signboard. ",
+        "description": "New Izlet. Delicious pastries, sandwiches and coffee. The cafe is small and without a signboard. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/_izlet\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/w4sXGZvY5YRrJ9z46",
+        "image": "/data/images/izlet.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafeterija Kofilin",
+        "lat": 45.2482,
+        "lng": 19.841,
+        "shirt_description": "Coffee, sirniki, toasts and desserts",
+        "description": "Coffee, sirniki, toasts and desserts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/kofilin.srbija\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/tMUESzqqwbSUKAqQA",
+        "image": "/data/images/kofilin.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Coffee Bara Rumenačka",
+        "lat": 45.2638,
+        "lng": 19.8169,
+        "shirt_description": "Coffee, desserts and breakfasts",
+        "description": "Coffee, desserts and breakfasts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeebara.srbija\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/vJ2KQQZzo16JBysw7",
+        "image": "/data/images/coffeebara.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Coffee Bara Gogoljeva",
+        "lat": 45.24669,
+        "lng": 19.83378,
+        "shirt_description": "Coffee, desserts and breakfasts",
+        "description": "Coffee, desserts and breakfasts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeebara.srbija\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/3VoggdtrDjNW54ja8",
+        "image": "/data/images/coffeebara.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Tischler ",
+        "lat": 45.247,
+        "lng": 19.8334,
+        "shirt_description": "A small coffee shop with a couple of tables and a small terrace. Pastries can be served with coffee.",
+        "description": "A small coffee shop with a couple of tables and a small terrace. Pastries can be served with coffee.  A large assortment of tobacco is available (there is no smoking inside)",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/tischler_store\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/Lg2A4sGCbzJWDgkG7",
+        "image": "/data/images/tischler.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "MLIN Coffee GARDEN",
+        "lat": 45.2498,
+        "lng": 19.8007,
+        "shirt_description": "A coffee shop with it's own roasted beans and a terrace, hidden in the backstreets.",
+        "description": "A coffee shop with it's own roasted beans and a terrace, hidden in the backstreets.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/mlin_coffeeandteashop\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/u1UamMj3QNX9yFJR6",
+        "image": "/data/images/mlin.jpg",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "coffee_shop",
+            "beans_sale",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Čarolija Kafe",
+        "lat": 45.24195,
+        "lng": 19.84725,
+        "shirt_description": "The non-smoking lounge is separated from the main one. In summer, there is a terrace hidden in the backstreets. ",
+        "description": "The non-smoking lounge is separated from the main one. In summer, there is a terrace hidden in the backstreets. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/carolijapecivakafe\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/kMm8dU8M2Q1eoHrh9",
+        "image": "/data/images/carolia.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Šeherezada 021",
+        "lat": 45.25676,
+        "lng": 19.8474,
+        "shirt_description": "Desserts, ice cream and coffee. There is a terrace in summer.",
+        "description": "Desserts, ice cream and coffee. There is a terrace in summer.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/seherezada.ns23\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/8p3wHBBZEG6v2FVK6",
+        "image": "/data/images/seherezada.png",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop",
+            "ice_cream",
+            "desserts",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "ROZBRAT | STREET-BISTRO",
+        "lat": 45.25848,
+        "lng": 19.8459,
+        "shirt_description": "Full-day breakfasts and delicious burgers",
+        "description": "Full-day breakfasts and delicious burgers",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/rozbrat\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/yFRuZP4eG8PxFGLs9",
+        "image": "/data/images/rozbrat.jpg",
+        "attributes": [
+            "no_smoking",
+            "bar",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Fika Coffee Shop",
+        "lat": 45.25839,
+        "lng": 19.846,
+        "shirt_description": "A small and cozy coffee shop in the city center, offering coffee, tea and pastries.",
+        "description": "A small and cozy coffee shop in the city center, offering coffee, tea and pastries.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/fikacoffee.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/zMdk6NaKKB4YyNj77",
+        "image": "/data/images/fika.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Green House Coffee",
+        "lat": 45.2627,
+        "lng": 19.8501,
+        "shirt_description": "Signature drinks and a cozy atmosphere",
+        "description": "Signature drinks and a cozy atmosphere",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/grnhs.serbia\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/1bLJ2WpqaqzNvNut5",
+        "image": "/data/images/green1.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Le Klok Bistro",
+        "lat": 45.25549,
+        "lng": 19.86197,
+        "shirt_description": "Le Klok Bistro is a place where you will experience the spirit of France with the best ingredients from our region. ",
+        "description": "Le Klok Bistro is a place where you will experience the spirit of France with the best ingredients from our region. \r\nThere are several tables on a quiet street",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/le_klok_bistro",
+        "maps_url": "https:\/\/maps.app.goo.gl\/7dmuJRkqJkqS42Hq5",
+        "image": "/data/images/leklok.jpg",
+        "attributes": [
+            "food",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Raf Cafe",
+        "lat": 45.261,
+        "lng": 19.81028,
+        "shirt_description": "A cozy cafe with breakfasts and desserts",
+        "description": "A cozy cafe with breakfasts and desserts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/raf_cafe_\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/fbka8x9bkm87XbqZA",
+        "image": "/data/images/raf.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "food",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Petrus Caffe",
+        "lat": 45.2543,
+        "lng": 19.8464,
+        "shirt_description": "A large restaurant with a non-smoking lounge on the second floor and a summer terrace.",
+        "description": "A large restaurant with a non-smoking lounge on the second floor and a summer terrace.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/petrus_ns\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/3rMC5BuvBJCz1XwE8",
+        "image": "/data/images/petrus.png",
+        "attributes": [
+            "smoke",
+            "bar",
+            "cafe",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "tiho i toplo",
+        "lat": 45.2569,
+        "lng": 19.837,
+        "shirt_description": "A coffee shop with several tables inside and outside. They offer desserts, classic coffee and alternative",
+        "description": "A coffee shop with several tables inside and outside. They offer desserts, classic coffee and alternative",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/tihotoplo\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/BEC1Dc4TnqxpUkV1A",
+        "image": "/data/images/tiho.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Drago mi je",
+        "lat": 45.2535,
+        "lng": 19.84044,
+        "shirt_description": "Cozy café in the heart of Novi Sad\r\nGreat coffee • Tea • Desserts in front of the Synagogue",
+        "description": "Cozy café in the heart of Novi Sad\r\nGreat coffee • Tea • Desserts in front of the Synagogue",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/dragomije.coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/UuyWaz78vCfUre4a6",
+        "image": "/data/images/drago.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "MAYBE COFFEE?",
+        "lat": 45.2547,
+        "lng": 19.84,
+        "shirt_description": "A cute little coffee shop with desserts",
+        "description": "A cute little coffee shop with desserts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/maybe_coffee.rs",
+        "maps_url": "https:\/\/maps.app.goo.gl\/omLC395XcpGCkXR4A",
+        "image": "/data/images/maybe.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafeterija II",
+        "lat": 45.2545,
+        "lng": 19.8443,
+        "shirt_description": "Full-day breakfasts, a good selection of coffee. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. ",
+        "description": "Full-day breakfasts, a good selection of coffee, including alternative, sale of coffee beans.\r\nThe division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/kafeterijabg\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/6WV5LERaDgSCKGLGA",
+        "image": "/data/images/kafeteria.jpeg",
+        "attributes": [
+            "smoke",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "beans_sale",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafeterija",
+        "lat": 45.24788,
+        "lng": 19.8482,
+        "shirt_description": "Full-day breakfasts, a good selection of coffee. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. ",
+        "description": "Full-day breakfasts, a good selection of coffee, including alternative, sale of coffee beans.\r\nThe division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. \r\n",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/kafeterijabg\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/6WV5LERaDgSCKGLGA",
+        "image": "/data/images/kafeteria.jpeg",
+        "attributes": [
+            "smoke",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "beans_sale",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "ALBYSUPERSTORE",
+        "lat": 45.25014,
+        "lng": 19.85184,
+        "shirt_description": "T-shirts, socks, desserts and coffee. There is a small terrace and porridge for breakfast.",
+        "description": "T-shirts, socks, desserts and coffee. There is a small terrace and porridge for breakfast.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/albysuperstore.rs",
+        "maps_url": "https:\/\/maps.app.goo.gl\/AeinU44YWgfWsifr8",
+        "image": "/data/images/alby.png",
+        "attributes": [
+            "no_smoking",
+            "desserts",
+            "terrace",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "SOC",
+        "lat": 45.2543,
+        "lng": 19.8456,
+        "shirt_description": "Outdoor coffee shop and also wine & cocktail bar. They only work during the warmer months. Check the cafe's instagram before visiting ",
+        "description": "Outdoor coffee shop and also wine & cocktail bar. They only work during the warmer months. Check the cafe's instagram before visiting ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/placetosoc\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/gCvt4bgDrYCF1KKV6",
+        "image": "/data/images/soc.png",
+        "attributes": [
+            "coffee_shop",
+            "terrace",
+            "pets_allowed",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Mala Radionica",
+        "lat": 45.25272,
+        "lng": 19.83461,
+        "shirt_description": "A specialty coffee shop with a diverse selection of its own roasted beans",
+        "description": "A specialty coffee shop with a diverse selection of its own roasted beans",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/malaradionicakafens",
+        "maps_url": "https:\/\/maps.app.goo.gl\/ggnp96Km4Z7AEXgi8",
+        "image": "/data/images/radionica.png",
+        "attributes": [
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "FREESHKA COFFEE 2",
+        "lat": 45.25943,
+        "lng": 19.8324,
+        "shirt_description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/freeshkakafa\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/PFdDrw9dnbdbnnJ6A",
+        "image": "/data/images/freeshka.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "La Dolce Fiore",
+        "lat": 45.24826,
+        "lng": 19.8489,
+        "shirt_description": "An updated cafe with an extensive menu. European cuisine and events every weekend",
+        "description": "An updated cafe with an extensive menu. European cuisine and events every weekend",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/ladolcefiore_cafe",
+        "maps_url": "https:\/\/maps.app.goo.gl\/GT1ra6fM3uwBsSSH8",
+        "image": "/data/images/ladorce.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "food",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Mandarin",
+        "lat": 45.24888,
+        "lng": 19.83378,
+        "shirt_description": "Spacious cafe bar, coffee, juices, light alcohol on the menu. The cafe regularly hosts various events",
+        "description": "Spacious cafe bar, coffee, juices, light alcohol on the menu. The cafe regularly hosts various events",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/mandarin_novi_sad",
+        "maps_url": "https:\/\/maps.app.goo.gl\/TaC4LityzwjC2D4r7",
+        "image": "/data/images/mandarin.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Nomad Cocktail Bar",
+        "lat": 45.25623,
+        "lng": 19.8498,
+        "shirt_description": "A cocktail bar in the heart of the city. There is a terrace in summer.",
+        "description": "A cocktail bar in the heart of the city. There is a terrace in summer.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/nomadthebar",
+        "maps_url": "https:\/\/maps.app.goo.gl\/AfuMCkMj6FwoUkQt5",
+        "image": "/data/images/nomad.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "snacks",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Hedonist Aperitif bar & Coffee",
+        "lat": 45.2567,
+        "lng": 19.8487,
+        "shirt_description": "Coffee shop and cocktail bar, there are desserts. The bar hosts various events",
+        "description": "Coffee shop and cocktail bar, there are desserts. The bar hosts various events",
+        "link": "",
+        "instagram": "",
+        "maps_url": "https:\/\/maps.app.goo.gl\/etJWtzTMcTGto72G6",
+        "image": "/data/images/hedonist.png",
+        "attributes": [
+            "no_smoking",
+            "bar",
+            "pets_allowed",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Seal&Tea",
+        "lat": 45.25799,
+        "lng": 19.83827,
+        "shirt_description": "Teahouse and culture centre in Novi Sad",
+        "description": "Teahouse and culture centre in Novi Sad",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/sealkia_tea\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/BtfmjobufnQA6kUM7",
+        "image": "/data/images/sealtea.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "desserts",
+            "cafe"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Green House Liman",
+        "lat": 45.244645,
+        "lng": 19.846743,
+        "shirt_description": "Signature drinks and a cozy atmosphere",
+        "description": "Signature drinks and a cozy atmosphere",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/grnhs.serbia\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/L81fkC77jSFvXLdQ9",
+        "image": "/data/images/green2.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "FILIPENKO COFFEE BAR",
+        "lat": 45.25684,
+        "lng": 19.8434,
+        "shirt_description": "A specialty coffee shop with a large selection of coffee beans, breakfasts and desserts.",
+        "description": "A specialty coffee shop with a large selection of coffee beans, breakfasts and desserts.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/filipenkocoffeebar\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/7WSUJSrEbvk2oJ9V8",
+        "image": "/data/images/filipenko.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts",
+            "snacks",
+            "beans_sale"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Coffee House Tulip",
+        "lat": 45.27746,
+        "lng": 19.56731,
+        "shirt_description": "Small coffee shop and accommodation in Gložan, near B.Petrovec and Novi Sad\r\nWorking hours: Friday-Saturday-Sunday 15h-21h",
+        "description": "Small coffee shop and accommodation in Gložan, near B.Petrovec and Novi Sad\r\nWorking hours: Friday-Saturday-Sunday 15h-21h",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeehousetulip\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/tdZFsBFzC9SpsP5P9",
+        "image": "/data/images/tulip.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "terrace",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Tramontana pizza & wine bar",
+        "lat": 45.25785,
+        "lng": 19.8465,
+        "shirt_description": "Probably the best pizza in town, N94 the best pizza in the WORLD ",
+        "description": "Probably the best pizza in town, N94 the best pizza in the WORLD ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/tramontana_novisad",
+        "maps_url": "https:\/\/maps.app.goo.gl\/nRbNJSsBGQ2e4AdVA",
+        "image": "/data/images/tramontana.png",
+        "attributes": [
+            "no_smoking",
+            "bar",
+            "wine",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Radio Cafe",
+        "lat": 45.25772,
+        "lng": 19.843136,
+        "shirt_description": "The cafe itself has an authentic patio with a pond, as well as various events.",
+        "description": "The cafe itself has an authentic patio with a pond, as well as various events.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/radiocafens\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/RJvWudKZ7zV8mg1w6",
+        "image": "/data/images/radio.png",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "cafe",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Vremeplov",
+        "lat": 45.24623,
+        "lng": 19.83966,
+        "shirt_description": "Breakfast, brunch, lunch, dinner, pastry, artisan gelato, garden",
+        "description": "Breakfast, brunch, lunch, dinner, pastry, artisan gelato, garden",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/bistro.vremeplov\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/Ly98H9dBEEFWT2mLA",
+        "image": "/data/images/vremeplov.jpg",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "cafe",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Velvet NS",
+        "lat": 45.24364,
+        "lng": 19.83554,
+        "shirt_description": "Large terrace and garden, varied menu",
+        "description": "Large terrace and garden, varied menu",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/velvet_novi_sad\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/53Z27uGCXKf5FYALA",
+        "image": "/data/images/velvet.png",
+        "attributes": [
+            "bar",
+            "cafe",
+            "food",
+            "terrace",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Loft Bašta",
+        "lat": 45.2563,
+        "lng": 19.84315,
+        "shirt_description": "Probably the largest garden in the city. There is a varied menu, coffee and alcohol to choose from.",
+        "description": "Probably the largest garden in the city. There is a varied menu, coffee and alcohol to choose from.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/loft_coffee_food_bar\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/FqrwXJwe6AcXH4oB6",
+        "image": "/data/images/loftgarden.png",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "cafe",
+            "food",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Jasmin A Maslina",
+        "lat": 45.2399,
+        "lng": 19.83763,
+        "shirt_description": "Probably the best restaurant in the city.",
+        "description": "Probably the best restaurant in the city.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/jasmin_a_maslina\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/GL6e6HU37oKKWab98",
+        "image": "/data/images/jasmin.png",
+        "attributes": [
+            "no_smoking",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Plant Power",
+        "lat": 45.25609,
+        "lng": 19.846781,
+        "shirt_description": "Plant based restoran, full-day breakfasts",
+        "description": "Plant based restoran, full-day breakfasts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/plantpower.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/XtM5XDckCCZiZLiU9",
+        "image": "/data/images/plant.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "food",
+            "breakfast",
+            "vegan"
+        ],
+        "verified": true
+    }
+]

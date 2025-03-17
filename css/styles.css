@@ -1,0 +1,76 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+main {
+    margin: 56px 0 0; /* Убираем margin-bottom (40px), так как футер удалён */
+    min-height: calc(100vh - 56px); /* Учитываем только высоту header (56px) */
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.content {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+    display: flex; /* Добавляем flex, чтобы карта и список растянулись */
+}
+
+/* Скрываем футер */
+footer {
+    display: none;
+}
+
+/* Карта */
+.map {
+    flex: 1; /* Занимает оставшееся пространство */
+    height: 100%; /* Растягивается на всю высоту */
+    min-height: 0;
+}
+
+/* Контейнер списка */
+.places-list-container {
+    width: 300px; /* Фиксированная ширина, можно настроить */
+    height: 100%; /* Растягивается на всю высоту */
+    overflow-y: auto; /* Скроллинг, если контент превышает высоту */
+    background-color: #f9f9f9; /* Для видимости, можно убрать */
+}
+
+/* Список мест */
+.places-list {
+    max-height: 100%; /* Растягиваем список на всю высоту контейнера */
+    overflow-y: auto; /* Скроллинг для списка */
+}
+
+/* Фильтры */
+.filters-block {
+    flex-shrink: 0; /* Фильтры не сжимаются */
+    min-height: 0;
+}
+
+:root {
+    --social-icon-width: 27px;
+    --social-icon-height: 27px;
+    --filter-icon-width: 16px;
+    --filter-icon-height: 16px;
+    --place-links-filter-icon-width: 20px;
+    --place-links-filter-icon-height: 20px;
+    --popup-min-height-desktop: 150px;
+    --popup-min-height-mobile: 110px;
+    --color-primary: #333;
+    --color-secondary: #3388ff;
+    --color-hover: #555;
+    --color-close-button: #ff4444;
+    --color-text-secondary: #666;
+}

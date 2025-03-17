@@ -1,0 +1,1193 @@
+[
+    {
+        "name": "Biciklana 23",
+        "lat": 45.24016169,
+        "lng": 19.84743287,
+        "shirt_description": "Completely non-smoking cafe and bicycle service",
+        "description": "Completely non-smoking cafe and bicycle service, the menu can include desserts and sandwiches. Bicycles can be rented during the warmer months.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/biciklana23\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/cCWtgfoQ8YfxmLwS7",
+        "image": "/data/images/biciklana.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks",
+            "terrace",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Le Bol NS",
+        "lat": 45.25599974,
+        "lng": 19.84919648,
+        "shirt_description": "Breakfast all day & Smoke free & Coworking",
+        "description": "Большое меню: горячее, завтраки и дессерты, есть вино, закуски и, конечно, кофе. \r\n<br>Небольшая и уютная терраса",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/lebolns\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/XWRaLduEZV8YgXcw5",
+        "image": "/data/images/lebol.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "desserts",
+            "food",
+            "terrace",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Sweet & Green",
+        "lat": 45.25609233,
+        "lng": 19.84676623,
+        "shirt_description": "Healthy salads, porridge, soups and desserts. There are vegetarian options on the menu.",
+        "description": "Healthy salads, porridge, soups and desserts. There are vegetarian options on the menu.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/sweetandgreen.rs\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/Ffq17dbGzLRgUnvAA",
+        "image": "/data/images/sweetgreen.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "cafe",
+            "vegan"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Vege Vegan - Restoran zdrave hrane",
+        "lat": 45.25405343,
+        "lng": 19.8397541,
+        "shirt_description": "Vegetarian menu and desserts. A small courtyard with several tables.",
+        "description": "Vegetarian menu and desserts. A small courtyard with several tables.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/vegeveganorganicfood",
+        "maps_url": "https:\/\/goo.gl\/maps\/DSHs3XPzWqYeJ2Si8",
+        "image": "/data/images/vegevegan.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "vegan",
+            "terrace",
+            "cafe"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Organic factory",
+        "lat": 45.24006898,
+        "lng": 19.83740056,
+        "shirt_description": "A small restaurant with a varied menu, breakfasts and pastries. Please note the opening hours (open until 14:00)",
+        "description": "A small restaurant with a varied menu, breakfasts and pastries. Please note the opening hours (open until 14:00)",
+        "link": "",
+        "instagram": "https:\/\/www.facebook.com\/organicfactory.novisad\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/U6s8M6K2w5jzdrYJ6",
+        "image": "/data/images/organicfactory.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "pets_allowed",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "ANANDA VEGAN RESTAURANT",
+        "lat": 45.24948867,
+        "lng": 19.83951697,
+        "shirt_description": "Vegetarian restaurant in the city center. Full menu: breakfasts, main courses, desserts and drinks.",
+        "description": "Vegetarian restaurant in the city center. Full menu: breakfasts, main courses, desserts and drinks.",
+        "link": "https:\/\/ananda.rs\/",
+        "instagram": "https:\/\/www.instagram.com\/ananda_vegan_restaurant\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/xfHhYgozHhqJBpwRA",
+        "image": "/data/images/ananda.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "food",
+            "vegan",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Bulevar Books",
+        "lat": 45.25333086,
+        "lng": 19.84536255,
+        "shirt_description": "It's a bookstore (I recommend it), they host music events, but you can also stop by for coffee.",
+        "description": "It's a bookstore (I recommend it), they host music events, but you can also stop by for coffee.",
+        "link": "https:\/\/bulevarbooks.com\/",
+        "instagram": "https:\/\/www.instagram.com\/bulevarbooks\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/nU2SUP9ScpwjAyzk7",
+        "image": "/data/images/bulevar.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Gabby Caffe & Bar",
+        "lat": 45.2568215,
+        "lng": 19.84845344,
+        "shirt_description": "Cafe-bar in the city center. The menu includes breakfasts, drinks, desserts and main dishes.",
+        "description": "Cafe-bar in the city center. The menu includes breakfasts, drinks, desserts and main dishes.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/cafe_gabby\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/X9KGHUybdjUT7PAKA",
+        "image": "/data/images/gabby.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "bar",
+            "desserts",
+            "food",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Crni Ovan",
+        "lat": 45.25619865,
+        "lng": 19.84828467,
+        "shirt_description": "A very pet-friendly bar hidden in a courtyard in the city center.",
+        "description": "🐕‍🦺 Spot for doggos, coffee, booze&brews, activism & solidarity. 100% smokefree. 100% pet friendly🐾🐾 ♥️no place for racism, sexism, homophobia",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/crniovan\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/jMF1AGERLYxAh9Lt6",
+        "image": "/data/images/crniovan.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "cafe"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Fresh food caffe 021",
+        "lat": 45.25482795,
+        "lng": 19.83122664,
+        "shirt_description": "A small, cozy health food cafe. Porridges, sandwiches, desserts, and main dishes. ",
+        "description": "A small, cozy health food cafe. Porridges, sandwiches, desserts, and main dishes. \r\nA few tables inside and outside. You can get takeout",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/freshfoodcaffe021\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/ccJgtABKyLaFTCY27",
+        "image": "/data/images/freshfood.jpg",
+        "attributes": [
+            "no_smoking",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Šećernema",
+        "lat": 45.24923323,
+        "lng": 19.83931447,
+        "shirt_description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/secernema\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/j2fUkvcEVqASgYWR8",
+        "image": "/data/images/secernema.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop",
+            "desserts",
+            "vegan",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Šećernema Liman",
+        "lat": 45.24135059,
+        "lng": 19.84760767,
+        "shirt_description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "description": "Vegan and lean sweets\r\nwithout added sugar, gluten and lactose",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/secernema\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/b5WSeH2Tuwb3bdni6",
+        "image": "/data/images/secernema.jpg",
+        "attributes": [
+            "desserts",
+            "vegan"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Izlet",
+        "lat": 45.25620685,
+        "lng": 19.85169916,
+        "shirt_description": "Coffee and delicious pastries. The cafe is small, but you can take a table and sit in the park.",
+        "description": "Coffee and delicious pastries. The cafe is small, but you can take a table and sit in the park.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/_izlet",
+        "maps_url": "https:\/\/goo.gl\/maps\/tTq27yBpApmx4cDr9",
+        "image": "/data/images/izlet.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Toster Bar",
+        "lat": 45.2562211,
+        "lng": 19.84431976,
+        "shirt_description": "Burgers from original recipes",
+        "description": "Homemade sauces made from original recipes, locally sourced meat, additive-free bread, and a bean salad together make a perfect combination that leaves no one indifferent.",
+        "link": "https:\/\/tosterbar.rs\/",
+        "instagram": "https:\/\/www.instagram.com\/tosterbar\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/mpJFeVnAKbA3pVXv9",
+        "image": "/data/images/toster.jpg",
+        "attributes": [
+            "no_smoking",
+            "food",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "FREESHKA COFFEE",
+        "lat": 45.24698,
+        "lng": 19.83928,
+        "shirt_description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/freeshkakafa\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/PFdDrw9dnbdbnnJ6A",
+        "image": "/data/images/freeshka.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Block 32",
+        "lat": 45.2605,
+        "lng": 19.8303,
+        "shirt_description": "The coffee shop is now open on Mondays as well. Delicious classic and alternative coffee.",
+        "description": "The coffee shop is now open on Mondays as well. Delicious classic and alternative coffee.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeeculture32",
+        "maps_url": "https:\/\/goo.gl\/maps\/BdzhqNcV7bDHJC6U8",
+        "image": "/data/images/block32.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Macchiato Fax",
+        "lat": 45.2491578,
+        "lng": 19.849806,
+        "shirt_description": "Restaurant with an extensive menu and terrace. There is a small non-smoking area (but cigarette smoke may still be present)",
+        "description": "Restaurant with an extensive menu and terrace. There is a small non-smoking area (but cigarette smoke may still be present)",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/macchiatofax\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/Z7eFs4x52LEv8WuH6",
+        "image": "/data/images/fax.jpg",
+        "attributes": [
+            "smoke",
+            "terrace",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Zenit Books, Coffee, Bar, & Bookstore",
+        "lat": 45.2570533,
+        "lng": 19.840729,
+        "shirt_description": "A bookstore and café bar. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present",
+        "description": "A bookstore and café bar. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. There are events and music, coffee, snacks and alcohol.",
+        "link": "https:\/\/zenitbooks.com\/",
+        "instagram": "",
+        "maps_url": "https:\/\/goo.gl\/maps\/xk9spuW9uGgq2nuG9",
+        "image": "/data/images/zenit.webp",
+        "attributes": [
+            "smoke",
+            "pets_allowed",
+            "coffee_shop",
+            "bar",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "CoffeeRide",
+        "lat": 45.2505635,
+        "lng": 19.8332106,
+        "shirt_description": "A little cafe & bicycle workshop",
+        "description": "A little cafe & bicycle workshop",
+        "link": "https:\/\/coffeeride.day\/",
+        "instagram": "https:\/\/www.instagram.com\/CoffeeRide.ns",
+        "maps_url": "https:\/\/maps.app.goo.gl\/8RX4Sr7XJ8sQdZ2A7",
+        "image": "/data/images/cofferide.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Urbano Kafa & Voće",
+        "lat": 45.2487,
+        "lng": 19.8329,
+        "shirt_description": "Coffee shop on Braće Ribnikar Street, coffee, tea and fresh juices.",
+        "description": "Coffee shop on Braće Ribnikar Street, coffee, tea and fresh juices.",
+        "link": "",
+        "instagram": "https:\/\/instagram.com\/urbano_coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/dmLACj19WzFCnq3J7",
+        "image": "/data/images/urbano.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Pendžer",
+        "lat": 45.2608,
+        "lng": 19.8198,
+        "shirt_description": "A cozy and charming coffee shop with a great selection of alternative coffee. Tea, hot chocolate, croissants, and oreshki with sweetened condensed milk.",
+        "description": "A cozy and charming coffee shop with a great selection of alternative coffee. Tea, hot chocolate, croissants, and oreshki with sweetened condensed milk.",
+        "link": "",
+        "instagram": "https:\/\/instagram.com\/pendzer_coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/1BrGKzswxXEgimK8A",
+        "image": "/data/images/pendzer.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts",
+            "beans_sale"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafetea",
+        "lat": 45.2616,
+        "lng": 19.852,
+        "shirt_description": "A cozy coffee shop with delicious coffee, offering specialty coffee beans.",
+        "description": "A cozy coffee shop with delicious coffee, offering specialty coffee beans.",
+        "link": "",
+        "instagram": "https:\/\/instagram.com\/kafetea_coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/kNhFBFpAPjoPmntm7",
+        "image": "/data/images/kafetea.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Bruno Bar",
+        "lat": 45.2422,
+        "lng": 19.8253,
+        "shirt_description": "Craft Beer, Cocktails, Liquors",
+        "description": "Craft Beer, Cocktails, Liquors",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/brunobar.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/cKjmyUCiW44XKJK37",
+        "image": "/data/images/bruno.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "beer",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "TEPLICA Wine bar",
+        "lat": 45.2522,
+        "lng": 19.841,
+        "shirt_description": "Cozy corner of sips and stories. Wine shop and small wine bar. ",
+        "description": "Cozy corner of sips and stories. Wine shop and small wine bar. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/teplica.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/cekHQ4FHxuGxsfwC7",
+        "image": "/data/images/teplica.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "wine",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Martin kafa Dunavska",
+        "lat": 45.25696,
+        "lng": 19.85002,
+        "shirt_description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/martinkafa\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/nmmNdAPa7Zv3snmq6",
+        "image": "/data/images/martin1.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Martin Kafa Železnička",
+        "lat": 45.25175,
+        "lng": 19.84205,
+        "shirt_description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "description": "A coffee shop in a quiet passage, with a few tables outside, offering a choice of coffee, tea, and smoothies.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/martinkafa\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/tNQfAYjoGeaG6hA18",
+        "image": "/data/images/martin1.jpg",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Izlet 2",
+        "lat": 45.25682,
+        "lng": 19.84666,
+        "shirt_description": "New Izlet. Delicious pastries, sandwiches and coffee. The cafe is small and without a signboard. ",
+        "description": "New Izlet. Delicious pastries, sandwiches and coffee. The cafe is small and without a signboard. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/_izlet\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/w4sXGZvY5YRrJ9z46",
+        "image": "/data/images/izlet.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafeterija Kofilin",
+        "lat": 45.2482,
+        "lng": 19.841,
+        "shirt_description": "Coffee, sirniki, toasts and desserts",
+        "description": "Coffee, sirniki, toasts and desserts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/kofilin.srbija\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/tMUESzqqwbSUKAqQA",
+        "image": "/data/images/kofilin.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Coffee Bara Rumenačka",
+        "lat": 45.2638,
+        "lng": 19.8169,
+        "shirt_description": "Coffee, desserts and breakfasts",
+        "description": "Coffee, desserts and breakfasts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeebara.srbija\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/vJ2KQQZzo16JBysw7",
+        "image": "/data/images/coffeebara.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Coffee Bara Gogoljeva",
+        "lat": 45.24669,
+        "lng": 19.83378,
+        "shirt_description": "Coffee, desserts and breakfasts",
+        "description": "Coffee, desserts and breakfasts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeebara.srbija\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/3VoggdtrDjNW54ja8",
+        "image": "/data/images/coffeebara.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Tischler ",
+        "lat": 45.247,
+        "lng": 19.8334,
+        "shirt_description": "A small coffee shop with a couple of tables and a small terrace. Pastries can be served with coffee.",
+        "description": "A small coffee shop with a couple of tables and a small terrace. Pastries can be served with coffee.  A large assortment of tobacco is available (there is no smoking inside)",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/tischler_store\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/Lg2A4sGCbzJWDgkG7",
+        "image": "/data/images/tischler.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "MLIN Coffee GARDEN",
+        "lat": 45.2498,
+        "lng": 19.8007,
+        "shirt_description": "A coffee shop with it's own roasted beans and a terrace, hidden in the backstreets.",
+        "description": "A coffee shop with it's own roasted beans and a terrace, hidden in the backstreets.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/mlin_coffeeandteashop\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/u1UamMj3QNX9yFJR6",
+        "image": "/data/images/mlin.jpg",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "coffee_shop",
+            "beans_sale",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Čarolija Kafe",
+        "lat": 45.24195,
+        "lng": 19.84725,
+        "shirt_description": "The non-smoking lounge is separated from the main one. In summer, there is a terrace hidden in the backstreets. ",
+        "description": "The non-smoking lounge is separated from the main one. In summer, there is a terrace hidden in the backstreets. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/carolijapecivakafe\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/kMm8dU8M2Q1eoHrh9",
+        "image": "/data/images/carolia.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Šeherezada 021",
+        "lat": 45.25676,
+        "lng": 19.8474,
+        "shirt_description": "Desserts, ice cream and coffee. There is a terrace in summer.",
+        "description": "Desserts, ice cream and coffee. There is a terrace in summer.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/seherezada.ns23\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/8p3wHBBZEG6v2FVK6",
+        "image": "/data/images/seherezada.png",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop",
+            "ice_cream",
+            "desserts",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "ROZBRAT | STREET-BISTRO",
+        "lat": 45.25848,
+        "lng": 19.8459,
+        "shirt_description": "Full-day breakfasts and delicious burgers",
+        "description": "Full-day breakfasts and delicious burgers",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/rozbrat\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/yFRuZP4eG8PxFGLs9",
+        "image": "/data/images/rozbrat.jpg",
+        "attributes": [
+            "no_smoking",
+            "bar",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Fika Coffee Shop",
+        "lat": 45.25839,
+        "lng": 19.846,
+        "shirt_description": "A small and cozy coffee shop in the city center, offering coffee, tea and pastries.",
+        "description": "A small and cozy coffee shop in the city center, offering coffee, tea and pastries.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/fikacoffee.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/zMdk6NaKKB4YyNj77",
+        "image": "/data/images/fika.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Green House Coffee",
+        "lat": 45.2627,
+        "lng": 19.8501,
+        "shirt_description": "Signature drinks and a cozy atmosphere",
+        "description": "Signature drinks and a cozy atmosphere",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/grnhs.serbia\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/1bLJ2WpqaqzNvNut5",
+        "image": "/data/images/green1.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Le Klok Bistro",
+        "lat": 45.25549,
+        "lng": 19.86197,
+        "shirt_description": "Le Klok Bistro is a place where you will experience the spirit of France with the best ingredients from our region. ",
+        "description": "Le Klok Bistro is a place where you will experience the spirit of France with the best ingredients from our region. \r\nThere are several tables on a quiet street",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/le_klok_bistro",
+        "maps_url": "https:\/\/maps.app.goo.gl\/7dmuJRkqJkqS42Hq5",
+        "image": "/data/images/leklok.jpg",
+        "attributes": [
+            "food",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Raf Cafe",
+        "lat": 45.261,
+        "lng": 19.81028,
+        "shirt_description": "A cozy cafe with breakfasts and desserts",
+        "description": "A cozy cafe with breakfasts and desserts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/raf_cafe_\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/fbka8x9bkm87XbqZA",
+        "image": "/data/images/raf.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "food",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Petrus Caffe",
+        "lat": 45.2543,
+        "lng": 19.8464,
+        "shirt_description": "A large restaurant with a non-smoking lounge on the second floor and a summer terrace.",
+        "description": "A large restaurant with a non-smoking lounge on the second floor and a summer terrace.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/petrus_ns\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/3rMC5BuvBJCz1XwE8",
+        "image": "/data/images/petrus.png",
+        "attributes": [
+            "smoke",
+            "bar",
+            "cafe",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "tiho i toplo",
+        "lat": 45.2569,
+        "lng": 19.837,
+        "shirt_description": "A coffee shop with several tables inside and outside. They offer desserts, classic coffee and alternative",
+        "description": "A coffee shop with several tables inside and outside. They offer desserts, classic coffee and alternative",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/tihotoplo\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/BEC1Dc4TnqxpUkV1A",
+        "image": "/data/images/tiho.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Drago mi je",
+        "lat": 45.2535,
+        "lng": 19.84044,
+        "shirt_description": "Cozy café in the heart of Novi Sad\r\nGreat coffee • Tea • Desserts in front of the Synagogue",
+        "description": "Cozy café in the heart of Novi Sad\r\nGreat coffee • Tea • Desserts in front of the Synagogue",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/dragomije.coffee",
+        "maps_url": "https:\/\/maps.app.goo.gl\/UuyWaz78vCfUre4a6",
+        "image": "/data/images/drago.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts",
+            "snacks"
+        ],
+        "verified": true
+    },
+    {
+        "name": "MAYBE COFFEE?",
+        "lat": 45.2547,
+        "lng": 19.84,
+        "shirt_description": "A cute little coffee shop with desserts",
+        "description": "A cute little coffee shop with desserts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/maybe_coffee.rs",
+        "maps_url": "https:\/\/maps.app.goo.gl\/omLC395XcpGCkXR4A",
+        "image": "/data/images/maybe.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafeterija II",
+        "lat": 45.2545,
+        "lng": 19.8443,
+        "shirt_description": "Full-day breakfasts, a good selection of coffee. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. ",
+        "description": "Full-day breakfasts, a good selection of coffee, including alternative, sale of coffee beans.\r\nThe division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/kafeterijabg\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/6WV5LERaDgSCKGLGA",
+        "image": "/data/images/kafeteria.jpeg",
+        "attributes": [
+            "smoke",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "beans_sale",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Kafeterija",
+        "lat": 45.24788,
+        "lng": 19.8482,
+        "shirt_description": "Full-day breakfasts, a good selection of coffee. The division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. ",
+        "description": "Full-day breakfasts, a good selection of coffee, including alternative, sale of coffee beans.\r\nThe division between smoking and non-smoking areas is very loose, so cigarette smoke may be present. \r\n",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/kafeterijabg\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/6WV5LERaDgSCKGLGA",
+        "image": "/data/images/kafeteria.jpeg",
+        "attributes": [
+            "smoke",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "beans_sale",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "ALBYSUPERSTORE",
+        "lat": 45.25014,
+        "lng": 19.85184,
+        "shirt_description": "T-shirts, socks, desserts and coffee. There is a small terrace and porridge for breakfast.",
+        "description": "T-shirts, socks, desserts and coffee. There is a small terrace and porridge for breakfast.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/albysuperstore.rs",
+        "maps_url": "https:\/\/maps.app.goo.gl\/AeinU44YWgfWsifr8",
+        "image": "/data/images/alby.png",
+        "attributes": [
+            "no_smoking",
+            "desserts",
+            "terrace",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "SOC",
+        "lat": 45.2543,
+        "lng": 19.8456,
+        "shirt_description": "Outdoor coffee shop and also wine & cocktail bar. They only work during the warmer months. Check the cafe's instagram before visiting ",
+        "description": "Outdoor coffee shop and also wine & cocktail bar. They only work during the warmer months. Check the cafe's instagram before visiting ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/placetosoc\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/gCvt4bgDrYCF1KKV6",
+        "image": "/data/images/soc.png",
+        "attributes": [
+            "coffee_shop",
+            "terrace",
+            "pets_allowed",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Mala Radionica",
+        "lat": 45.25272,
+        "lng": 19.83461,
+        "shirt_description": "A specialty coffee shop with a diverse selection of its own roasted beans",
+        "description": "A specialty coffee shop with a diverse selection of its own roasted beans",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/malaradionicakafens",
+        "maps_url": "https:\/\/maps.app.goo.gl\/ggnp96Km4Z7AEXgi8",
+        "image": "/data/images/radionica.png",
+        "attributes": [
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "FREESHKA COFFEE 2",
+        "lat": 45.25943,
+        "lng": 19.8324,
+        "shirt_description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "description": "A small coffee shop with a small terrace and its own coffee roasting",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/freeshkakafa\/",
+        "maps_url": "https:\/\/goo.gl\/maps\/PFdDrw9dnbdbnnJ6A",
+        "image": "/data/images/freeshka.jpg",
+        "attributes": [
+            "no_smoking",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "La Dolce Fiore",
+        "lat": 45.24826,
+        "lng": 19.8489,
+        "shirt_description": "An updated cafe with an extensive menu. European cuisine and events every weekend",
+        "description": "An updated cafe with an extensive menu. European cuisine and events every weekend",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/ladolcefiore_cafe",
+        "maps_url": "https:\/\/maps.app.goo.gl\/GT1ra6fM3uwBsSSH8",
+        "image": "/data/images/ladorce.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "food",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Mandarin",
+        "lat": 45.24888,
+        "lng": 19.83378,
+        "shirt_description": "Spacious cafe bar, coffee, juices, light alcohol on the menu. The cafe regularly hosts various events",
+        "description": "Spacious cafe bar, coffee, juices, light alcohol on the menu. The cafe regularly hosts various events",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/mandarin_novi_sad",
+        "maps_url": "https:\/\/maps.app.goo.gl\/TaC4LityzwjC2D4r7",
+        "image": "/data/images/mandarin.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "bar"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Nomad Cocktail Bar",
+        "lat": 45.25623,
+        "lng": 19.8498,
+        "shirt_description": "A cocktail bar in the heart of the city. There is a terrace in summer.",
+        "description": "A cocktail bar in the heart of the city. There is a terrace in summer.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/nomadthebar",
+        "maps_url": "https:\/\/maps.app.goo.gl\/AfuMCkMj6FwoUkQt5",
+        "image": "/data/images/nomad.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "bar",
+            "snacks",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Hedonist Aperitif bar & Coffee",
+        "lat": 45.2567,
+        "lng": 19.8487,
+        "shirt_description": "Coffee shop and cocktail bar, there are desserts. The bar hosts various events",
+        "description": "Coffee shop and cocktail bar, there are desserts. The bar hosts various events",
+        "link": "",
+        "instagram": "",
+        "maps_url": "https:\/\/maps.app.goo.gl\/etJWtzTMcTGto72G6",
+        "image": "/data/images/hedonist.png",
+        "attributes": [
+            "no_smoking",
+            "bar",
+            "pets_allowed",
+            "coffee_shop"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Seal&Tea",
+        "lat": 45.25799,
+        "lng": 19.83827,
+        "shirt_description": "Teahouse and culture centre in Novi Sad",
+        "description": "Teahouse and culture centre in Novi Sad",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/sealkia_tea\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/BtfmjobufnQA6kUM7",
+        "image": "/data/images/sealtea.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "desserts",
+            "cafe"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Green House Liman",
+        "lat": 45.244645,
+        "lng": 19.846743,
+        "shirt_description": "Signature drinks and a cozy atmosphere",
+        "description": "Signature drinks and a cozy atmosphere",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/grnhs.serbia\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/L81fkC77jSFvXLdQ9",
+        "image": "/data/images/green2.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "FILIPENKO COFFEE BAR",
+        "lat": 45.25684,
+        "lng": 19.8434,
+        "shirt_description": "A specialty coffee shop with a large selection of coffee beans, breakfasts and desserts.",
+        "description": "A specialty coffee shop with a large selection of coffee beans, breakfasts and desserts.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/filipenkocoffeebar\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/7WSUJSrEbvk2oJ9V8",
+        "image": "/data/images/filipenko.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "coffee_shop",
+            "specialty",
+            "desserts",
+            "snacks",
+            "beans_sale"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Coffee House Tulip",
+        "lat": 45.27746,
+        "lng": 19.56731,
+        "shirt_description": "Small coffee shop and accommodation in Gložan, near B.Petrovec and Novi Sad\r\nWorking hours: Friday-Saturday-Sunday 15h-21h",
+        "description": "Small coffee shop and accommodation in Gložan, near B.Petrovec and Novi Sad\r\nWorking hours: Friday-Saturday-Sunday 15h-21h",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/coffeehousetulip\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/tdZFsBFzC9SpsP5P9",
+        "image": "/data/images/tulip.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "terrace",
+            "desserts"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Tramontana pizza & wine bar",
+        "lat": 45.25785,
+        "lng": 19.8465,
+        "shirt_description": "Probably the best pizza in town, N94 the best pizza in the WORLD ",
+        "description": "Probably the best pizza in town, N94 the best pizza in the WORLD ",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/tramontana_novisad",
+        "maps_url": "https:\/\/maps.app.goo.gl\/nRbNJSsBGQ2e4AdVA",
+        "image": "/data/images/tramontana.png",
+        "attributes": [
+            "no_smoking",
+            "bar",
+            "wine",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Radio Cafe",
+        "lat": 45.25772,
+        "lng": 19.843136,
+        "shirt_description": "The cafe itself has an authentic patio with a pond, as well as various events.",
+        "description": "The cafe itself has an authentic patio with a pond, as well as various events.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/radiocafens\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/RJvWudKZ7zV8mg1w6",
+        "image": "/data/images/radio.png",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "cafe",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Vremeplov",
+        "lat": 45.24623,
+        "lng": 19.83966,
+        "shirt_description": "Breakfast, brunch, lunch, dinner, pastry, artisan gelato, garden",
+        "description": "Breakfast, brunch, lunch, dinner, pastry, artisan gelato, garden",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/bistro.vremeplov\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/Ly98H9dBEEFWT2mLA",
+        "image": "/data/images/vremeplov.jpg",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "cafe",
+            "desserts",
+            "food",
+            "breakfast",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Velvet NS",
+        "lat": 45.24364,
+        "lng": 19.83554,
+        "shirt_description": "Large terrace and garden, varied menu",
+        "description": "Large terrace and garden, varied menu",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/velvet_novi_sad\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/53Z27uGCXKf5FYALA",
+        "image": "/data/images/velvet.png",
+        "attributes": [
+            "bar",
+            "cafe",
+            "food",
+            "terrace",
+            "breakfast"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Loft Bašta",
+        "lat": 45.2563,
+        "lng": 19.84315,
+        "shirt_description": "Probably the largest garden in the city. There is a varied menu, coffee and alcohol to choose from.",
+        "description": "Probably the largest garden in the city. There is a varied menu, coffee and alcohol to choose from.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/loft_coffee_food_bar\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/FqrwXJwe6AcXH4oB6",
+        "image": "/data/images/loftgarden.png",
+        "attributes": [
+            "pets_allowed",
+            "bar",
+            "cafe",
+            "food",
+            "terrace"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Jasmin A Maslina",
+        "lat": 45.2399,
+        "lng": 19.83763,
+        "shirt_description": "Probably the best restaurant in the city.",
+        "description": "Probably the best restaurant in the city.",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/jasmin_a_maslina\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/GL6e6HU37oKKWab98",
+        "image": "/data/images/jasmin.png",
+        "attributes": [
+            "no_smoking",
+            "food"
+        ],
+        "verified": true
+    },
+    {
+        "name": "Plant Power",
+        "lat": 45.25609,
+        "lng": 19.846781,
+        "shirt_description": "Plant based restoran, full-day breakfasts",
+        "description": "Plant based restoran, full-day breakfasts",
+        "link": "",
+        "instagram": "https:\/\/www.instagram.com\/plantpower.rs\/",
+        "maps_url": "https:\/\/maps.app.goo.gl\/XtM5XDckCCZiZLiU9",
+        "image": "/data/images/plant.png",
+        "attributes": [
+            "no_smoking",
+            "pets_allowed",
+            "cafe",
+            "food",
+            "breakfast",
+            "vegan"
+        ],
+        "verified": true
+    }
+]

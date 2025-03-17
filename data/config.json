@@ -1,0 +1,177 @@
+{
+  "filters": {
+    "leftFilters": [
+      {
+        "key": "no_smoking",
+        "label": "Smoke-Free",
+        "tooltip": "Places where smoking is not allowed",
+        "icon": "/data/images/nosmoking.svg"
+      },
+      {
+        "key": "terrace",
+        "label": "Terrace",
+        "tooltip": "Places with an outdoor seating area",
+        "icon": "/data/images/terrece.svg"
+      },
+      {
+        "key": "smoke",
+        "label": "Smoking Allowed",
+        "tooltip": "Places where smoking is permitted (may have separate areas)",
+        "icon": "/data/images/smoke.svg"
+      },
+      {
+        "key": "pets_allowed",
+        "label": "Pet-Friendly",
+        "tooltip": "Places where you can bring your pets",
+        "icon": "/data/images/dog.svg"
+      }
+    ],
+    "rightFilters": [
+      {
+        "key": "coffee_shop",
+        "label": "Coffee Shop",
+        "tooltip": "Places specializing in coffee and light snacks",
+        "icon": "/data/images/coffee.svg"
+      },
+      {
+        "key": "cafe",
+        "label": "Cafe",
+        "tooltip": "Casual spots for coffee, tea, and light meals",
+        "icon": "/data/images/cafe.svg"
+      },
+      {
+        "key": "bar",
+        "label": "Bar",
+        "tooltip": "Places offering alcoholic drinks like beer, wine, or cocktails",
+        "icon": "/data/images/bar.svg"
+      },
+      {
+        "key": "food",
+        "label": "Full Meals",
+        "tooltip": "Places offering main courses and substantial meals",
+        "icon": "/data/images/food.svg"
+      },
+      {
+        "key": "breakfast",
+        "label": "Breakfast",
+        "tooltip": "Places serving breakfast options",
+        "icon": "/data/images/breakfast.svg"
+      },
+      {
+        "key": "desserts",
+        "label": "Desserts",
+        "tooltip": "Places offering sweets, pastries, or desserts",
+        "icon": "/data/images/cake.svg"
+      },
+      {
+        "key": "snacks",
+        "label": "Snacks",
+        "tooltip": "Places with light bites like sandwiches or small plates",
+        "icon": "/data/images/sandwich.svg"
+      },
+      {
+        "key": "vegan",
+        "label": "Vegan Options",
+        "tooltip": "Places with vegan-friendly menu items",
+        "icon": "/data/images/vegan.svg"
+      },
+      {
+        "key": "specialty",
+        "label": "Specialty Coffee",
+        "tooltip": "Places offering high-quality or alternative coffee options",
+        "icon": "/data/images/coffee-pot.svg"
+      },
+      {
+        "key": "beans_sale",
+        "label": "Coffee Beans for Sale",
+        "tooltip": "Places where you can buy coffee beans",
+        "icon": "/data/images/coffee-beans.svg"
+      },
+      {
+        "key": "beer",
+        "label": "Craft Beer",
+        "tooltip": "Places offering craft or specialty beers",
+        "icon": "/data/images/beer.svg"
+      },
+      {
+        "key": "wine",
+        "label": "Wine",
+        "tooltip": "Places with a selection of wines",
+        "icon": "/data/images/wine.svg"
+      },
+      {
+        "key": "ice_cream",
+        "label": "Ice Cream",
+        "tooltip": "Places serving ice cream or frozen treats",
+        "icon": "/data/images/ice-cream.svg"
+      }
+    ]
+  },
+  "templates": {
+    "placeCardList": "<img src=\"${place.image}\" alt=\"${place.name}\" class=\"place-image\">\n<div class=\"place-content\">\n  <h3>${place.name}</h3>\n  <p>${place.shirt_description}</p>\n  <div class=\"place-links\">${place.attributes.map(attr => { const filter = config.filters.leftFilters.concat(config.filters.rightFilters).find(f => f.key === attr); return filter?.icon ? `<img src=\"${filter.icon}\" alt=\"${attr}\" title=\"${filter.tooltip}\" class=\"filter-icon\">` : ''; }).join('')}</div>\n</div>",
+    "placeCardPopup": "<img src=\"${place.image}\" alt=\"${place.name}\" class=\"place-image\">\n<div class=\"place-content\">\n  <h3>${place.name}</h3>\n  <p>${place.description}</p>\n  <div class=\"place-links-social\">\n    ${place.instagram ? `<a href=\"${place.instagram}\" target=\"_blank\"><img src=\"/data/images/instagram.svg\" alt=\"Instagram\" class=\"social-icon\"></a>` : ''}\n    ${place.maps_url ? `<a href=\"${place.maps_url}\" target=\"_blank\"><img src=\"/data/images/google.svg\" alt=\"Google Maps\" class=\"social-icon\"></a>` : ''}\n  </div>\n</div>"
+  },
+  "mapSettings": {
+    "center": [45.25010, 19.83756],
+    "initialZoom": 14,
+    "maxZoom": 19,
+    "clusterSettings": {
+      "disableClusteringAtZoom": 16,
+      "maxClusterRadius": 80,
+      "spiderfyOnMaxZoom": true,
+      "clusterIconTemplate": "<div style=\"background-color: #3388ff; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);\">${cluster.getChildCount()}</div>"
+    },
+    "tileLayer": {
+      "url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      "attribution": "© <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors © <a href=\"https://carto.com/attributions\">CARTO</a>",
+      "subdomains": "abcd"
+    }
+  },
+  "markerSettings": {
+    "defaultIcon": {
+      "className": "custom-marker-default",
+      "iconSize": [12, 12],
+      "iconAnchor": [6, 6]
+    },
+    "customIcon": {
+      "className": "custom-marker-selected",
+      "iconSize": [30, 40],
+      "iconAnchor": [15, 40],
+      "popupAnchor": [0, -40]
+    }
+  },
+  "styleSettings": {
+    "socialIconSize": [27, 27],
+    "filterIconSize": [16, 16],
+    "placeLinksFilterIconSize": [20, 20],
+    "popupMinHeight": {
+      "desktop": 150,
+      "mobile": 110
+    },
+    "colors": {
+      "primary": "#333",
+      "secondary": "#3388ff",
+      "hover": "#555",
+      "closeButton": "#ff4444",
+      "textSecondary": "#666"
+    }
+  },
+  "content": {
+    "cities": [
+      { "name": "Нови Сад", "disabled": false },
+      { "name": "Белград (Soon)", "disabled": true }
+    ],
+    "navLinks": [
+      { "label": "О нас", "href": "#" },
+      { "label": "О рекламе", "href": "#" },
+      { "label": "Контакты", "href": "#" },
+      { "label": "FAQ", "href": "#" }
+    ],
+    "buttonLabels": {
+      "showList": "Show list",
+      "close": "Close",
+      "showNearby": "Show nearby"
+    },
+    "footerText": "© 2025 Places. "
+  }
+}
